@@ -16,6 +16,10 @@
 		CB68554C25411B4F00132C1A /* Unsplash_SHOHTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68554B25411B4F00132C1A /* Unsplash_SHOHTests.swift */; };
 		CB68555725411B4F00132C1A /* Unsplash_SHOHUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68555625411B4F00132C1A /* Unsplash_SHOHUITests.swift */; };
 		CB68557A254148E700132C1A /* AppLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB685579254148E700132C1A /* AppLaunch.swift */; };
+		CB6855872541528900132C1A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855862541528900132C1A /* NetworkManager.swift */; };
+		CB68559D2541827500132C1A /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68559C2541827500132C1A /* PhotoModel.swift */; };
+		CB6855A22541858400132C1A /* PhotoExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A12541858400132C1A /* PhotoExif.swift */; };
+		CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A6254185A900132C1A /* PhotoUser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,10 @@
 		CB68555625411B4F00132C1A /* Unsplash_SHOHUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unsplash_SHOHUITests.swift; sourceTree = "<group>"; };
 		CB68555825411B4F00132C1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB685579254148E700132C1A /* AppLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunch.swift; sourceTree = "<group>"; };
+		CB6855862541528900132C1A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		CB68559C2541827500132C1A /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
+		CB6855A12541858400132C1A /* PhotoExif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoExif.swift; sourceTree = "<group>"; };
+		CB6855A6254185A900132C1A /* PhotoUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +111,10 @@
 			children = (
 				CB68554225411B4F00132C1A /* Info.plist */,
 				CB6855752541488200132C1A /* App */,
+				CB68559A2541823C00132C1A /* Domain */,
 				CB6855762541488D00132C1A /* Resources */,
 				CB685577254148B800132C1A /* Scenes */,
+				CB6855842541526800132C1A /* Utils */,
 			);
 			path = "Unsplash-SHOH";
 			sourceTree = "<group>";
@@ -161,6 +171,48 @@
 				CB68553A25411B4B00132C1A /* Main.storyboard */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		CB6855842541526800132C1A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CB6855852541527C00132C1A /* Managers */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		CB6855852541527C00132C1A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				CB68558E254152AE00132C1A /* NetworkManager */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		CB68558E254152AE00132C1A /* NetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				CB6855862541528900132C1A /* NetworkManager.swift */,
+			);
+			path = NetworkManager;
+			sourceTree = "<group>";
+		};
+		CB68559A2541823C00132C1A /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				CB68559B2541824A00132C1A /* Models */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		CB68559B2541824A00132C1A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CB6855A12541858400132C1A /* PhotoExif.swift */,
+				CB68559C2541827500132C1A /* PhotoModel.swift */,
+				CB6855A6254185A900132C1A /* PhotoUser.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,8 +345,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB68559D2541827500132C1A /* PhotoModel.swift in Sources */,
 				CB68553925411B4B00132C1A /* ViewController.swift in Sources */,
 				CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */,
+				CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */,
+				CB6855872541528900132C1A /* NetworkManager.swift in Sources */,
+				CB6855A22541858400132C1A /* PhotoExif.swift in Sources */,
 				CB68557A254148E700132C1A /* AppLaunch.swift in Sources */,
 				CB68553725411B4B00132C1A /* SceneDelegate.swift in Sources */,
 			);
