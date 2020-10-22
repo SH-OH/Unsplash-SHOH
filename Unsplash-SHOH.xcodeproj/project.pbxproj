@@ -15,6 +15,7 @@
 		CB68554125411B4F00132C1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB68553F25411B4F00132C1A /* LaunchScreen.storyboard */; };
 		CB68554C25411B4F00132C1A /* Unsplash_SHOHTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68554B25411B4F00132C1A /* Unsplash_SHOHTests.swift */; };
 		CB68555725411B4F00132C1A /* Unsplash_SHOHUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68555625411B4F00132C1A /* Unsplash_SHOHUITests.swift */; };
+		CB68557A254148E700132C1A /* AppLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB685579254148E700132C1A /* AppLaunch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		CB68555225411B4F00132C1A /* Unsplash-SHOHUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unsplash-SHOHUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB68555625411B4F00132C1A /* Unsplash_SHOHUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unsplash_SHOHUITests.swift; sourceTree = "<group>"; };
 		CB68555825411B4F00132C1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB685579254148E700132C1A /* AppLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,13 +101,10 @@
 		CB68553325411B4B00132C1A /* Unsplash-SHOH */ = {
 			isa = PBXGroup;
 			children = (
-				CB68553425411B4B00132C1A /* AppDelegate.swift */,
-				CB68553625411B4B00132C1A /* SceneDelegate.swift */,
-				CB68553825411B4B00132C1A /* ViewController.swift */,
-				CB68553A25411B4B00132C1A /* Main.storyboard */,
-				CB68553D25411B4F00132C1A /* Assets.xcassets */,
-				CB68553F25411B4F00132C1A /* LaunchScreen.storyboard */,
 				CB68554225411B4F00132C1A /* Info.plist */,
+				CB6855752541488200132C1A /* App */,
+				CB6855762541488D00132C1A /* Resources */,
+				CB685577254148B800132C1A /* Scenes */,
 			);
 			path = "Unsplash-SHOH";
 			sourceTree = "<group>";
@@ -126,6 +125,42 @@
 				CB68555825411B4F00132C1A /* Info.plist */,
 			);
 			path = "Unsplash-SHOHUITests";
+			sourceTree = "<group>";
+		};
+		CB6855752541488200132C1A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				CB68553425411B4B00132C1A /* AppDelegate.swift */,
+				CB685579254148E700132C1A /* AppLaunch.swift */,
+				CB68553625411B4B00132C1A /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		CB6855762541488D00132C1A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CB68553D25411B4F00132C1A /* Assets.xcassets */,
+				CB68553F25411B4F00132C1A /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CB685577254148B800132C1A /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				CB685578254148C400132C1A /* Main */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		CB685578254148C400132C1A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				CB68553825411B4B00132C1A /* ViewController.swift */,
+				CB68553A25411B4B00132C1A /* Main.storyboard */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +295,7 @@
 			files = (
 				CB68553925411B4B00132C1A /* ViewController.swift in Sources */,
 				CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */,
+				CB68557A254148E700132C1A /* AppLaunch.swift in Sources */,
 				CB68553725411B4B00132C1A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,7 +402,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -421,7 +457,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
