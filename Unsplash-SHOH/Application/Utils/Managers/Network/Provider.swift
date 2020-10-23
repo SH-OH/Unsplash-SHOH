@@ -1,5 +1,5 @@
 //
-//  DataRequester.swift
+//  Provider.swift
 //  Unsplash-SHOH
 //
 //  Created by Oh Sangho on 2020/10/23.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class DataRequester {
+final class Provider {
     
     var task: URLSessionDataTask?
     
@@ -69,7 +69,7 @@ final class DataRequester {
                     "02.parameters": parameters ?? "NO PARAMETERS",
                     "03.Response": response.isEmpty ? "NO DATA" : response
                 ]
-                Log.d(makeDict)
+//                Log.d(makeDict)
                 #endif
                 if let error = error {
                     Log.e(error)
@@ -77,7 +77,7 @@ final class DataRequester {
                 }
                 if let data = data,
                    let makeJson: T = try? T.decode(data: data) {
-                    Log.osh("success json : \(makeJson)")
+//                    Log.osh("success json : \(makeJson)")
                     return completion(.success(makeJson))
                 } else {
                     return completion(.failure(NetworkManager.RequestError.failedParsing))

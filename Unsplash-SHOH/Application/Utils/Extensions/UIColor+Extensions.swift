@@ -26,3 +26,14 @@ extension UIColor {
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
 }
+
+extension BaseViewController {
+    static func storyboard() -> Self {
+        let name = self.reuseIdentifier
+        let storyboard = UIStoryboard(name: name, bundle: .main)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: name) as? Self else {
+            preconditionFailure("Storyboard : '\(name)' init 실패")
+        }
+        return vc
+    }
+}

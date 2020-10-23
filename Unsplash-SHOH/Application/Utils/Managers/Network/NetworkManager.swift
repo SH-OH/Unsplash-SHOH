@@ -50,9 +50,11 @@ final class NetworkManager {
     static let shared = NetworkManager()
     
     private(set) var session: URLSession
+    private let loadingView: LoadingViewController
     
     private init() {
         self.session = .shared
+        self.loadingView = LoadingViewController()
     }
     
 }
@@ -61,8 +63,6 @@ final class NetworkManager {
 extension NetworkManager {
     func showNetworkActivity(_ show: Bool, useLoading: Bool) {
         guard useLoading else { return }
-        DispatchQueue.main.async {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = show
-        }
+        loadingView.control(show: show, useLoading: useLoading)
     }
 }

@@ -8,11 +8,12 @@
 import UIKit.UIWindow
 
 struct AppLaunch {
-    static func launchByOS(_ window: UIWindow?, isScene: Bool) {
+    static func launchByOS(_ window: UIWindow?,
+                           isScene: Bool) {
         if #available(iOS 13.0, *) {
             guard isScene else { return }
         }
-        window?.rootViewController = ViewController()
+        window?.rootViewController = BaseNavigationController(rootViewController: MainViewController.storyboard())
         window?.makeKeyAndVisible()
     }
 }
