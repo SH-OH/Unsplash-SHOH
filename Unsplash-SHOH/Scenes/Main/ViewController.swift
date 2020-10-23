@@ -13,6 +13,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 //        NetworkManager.shared.request(String.self, urlString: "", method: <#T##NetworkManager.HTTPMethod#>, completion: <#T##(Result<Data?, Error>) -> ()#>)
+        
+        
+        let findUrl = Bundle.main.url(forResource: "UserJson", withExtension: "json")!
+        let makeData = try! Data(contentsOf: findUrl)
+        let makeJson = try! JSONDecoder().decode(PhotoUser.self, from: makeData)
+        print(makeJson)
     }
 
 
