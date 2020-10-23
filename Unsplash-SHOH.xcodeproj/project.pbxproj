@@ -113,7 +113,6 @@
 		CB68553325411B4B00132C1A /* Unsplash-SHOH */ = {
 			isa = PBXGroup;
 			children = (
-				CB68554225411B4F00132C1A /* Info.plist */,
 				CB99FE7F25428D59004C15EB /* Application */,
 				CB68559A2541823C00132C1A /* Domain */,
 				CB99FE7E25428D37004C15EB /* Platform */,
@@ -237,6 +236,7 @@
 		CB99FE7F25428D59004C15EB /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				CB68554225411B4F00132C1A /* Info.plist */,
 				CB6855752541488200132C1A /* App */,
 				CB6855762541488D00132C1A /* Resources */,
 				CB685577254148B800132C1A /* Scenes */,
