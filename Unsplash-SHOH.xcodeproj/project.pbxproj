@@ -25,6 +25,7 @@
 		CB99FE8B25429AC5004C15EB /* APIDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE8A25429AC5004C15EB /* APIDomain.swift */; };
 		CB99FE942542A14C004C15EB /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE932542A14C004C15EB /* Log.swift */; };
 		CB99FE9A2542A617004C15EB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE992542A617004C15EB /* Constants.swift */; };
+		CB99FEA22542C212004C15EB /* Codable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FEA12542C212004C15EB /* Codable+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		CB99FE8A25429AC5004C15EB /* APIDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDomain.swift; sourceTree = "<group>"; };
 		CB99FE932542A14C004C15EB /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		CB99FE992542A617004C15EB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CB99FEA12542C212004C15EB /* Codable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,8 +185,8 @@
 		CB6855842541526800132C1A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				CB99FE922542A142004C15EB /* Logs */,
 				CB99FE5A25426B6D004C15EB /* Extensions */,
+				CB99FE922542A142004C15EB /* Log */,
 				CB6855852541527C00132C1A /* Managers */,
 			);
 			path = Utils;
@@ -229,6 +231,7 @@
 			children = (
 				CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */,
 				CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */,
+				CB99FEA12542C212004C15EB /* Codable+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -262,12 +265,12 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		CB99FE922542A142004C15EB /* Logs */ = {
+		CB99FE922542A142004C15EB /* Log */ = {
 			isa = PBXGroup;
 			children = (
 				CB99FE932542A14C004C15EB /* Log.swift */,
 			);
-			path = Logs;
+			path = Log;
 			sourceTree = "<group>";
 		};
 		CB99FE982542A60B004C15EB /* Constants */ = {
@@ -418,6 +421,7 @@
 				CB99FE9A2542A617004C15EB /* Constants.swift in Sources */,
 				CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */,
 				CB6855872541528900132C1A /* NetworkManager.swift in Sources */,
+				CB99FEA22542C212004C15EB /* Codable+Extensions.swift in Sources */,
 				CB6855A22541858400132C1A /* PhotoExif.swift in Sources */,
 				CB68557A254148E700132C1A /* AppLaunch.swift in Sources */,
 				CB68553725411B4B00132C1A /* SceneDelegate.swift in Sources */,

@@ -29,7 +29,8 @@ final class NetworkManager {
     }
     
     enum Queue {
-        static let rootQueue: DispatchQueue = DispatchQueue(label: "queue.NetworkManager.root")
+        static let rootQueue: DispatchQueue = DispatchQueue(label: "queue.NetworkManager.root",
+                                                            qos: .background)
         static let requestQueue: DispatchQueue = DispatchQueue(label: "\(Queue.rootQueue).request",
                                                                qos: .utility,
                                                                target: Queue.rootQueue)
@@ -75,12 +76,19 @@ final class NetworkManager {
 }
 
 extension NetworkManager {
+    
+    enum Result<Decodable, Error> {
+        case success(Decodable)
+        case failure(Error)
+    }
+    
     func request<T: Decodable>(_ type: T.Type,
+                               index: Int,
                                urlString: String,
                                method: HTTPMethod,
                                parameters: [String: Any]?,
                                callbackQueue: DispatchQueue = Queue.requestQueue,
-                               completion: @escaping (Swift.Result<Data?, Error>) -> ()) {
+                               completion: @escaping (Result<T, Error>) -> ()) {
         guard let components = self.prepareURLComponenets(urlString, parameters: parameters) else {
             return completion(.failure(RequestError.invalidURL))
         }
@@ -88,11 +96,15 @@ extension NetworkManager {
             return completion(.failure(RequestError.invalidURL))
         }
         let request: URLRequest = self.prepareURLRequest(url, method: method)
+        print("1. root in before : \(index)")
         Queue.rootQueue.async {
+            print("2. root in after : \(index)")
             self.showNetworkActivity(true)
             let newTask: URLSessionDataTask = self.session.dataTask(with: request) { [weak self] (data, response, error) in
                 self?.showNetworkActivity(false)
-                Queue.requestQueue.async {
+                print("3. request in before : \(index)")
+                Queue.requestQueue.sync {
+                    print("4. request in after : \(index)")
                     #if DEBUG
                     let response: String = String(data: data ?? .init(), encoding: .utf8) ?? "NO DATA"
                     let makeDict: [String: Any] = [
@@ -100,13 +112,17 @@ extension NetworkManager {
                         "02.parameters": parameters ?? "NO PARAMETERS",
                         "03.Response": response.isEmpty ? "NO DATA" : response
                     ]
-                    Log.d(makeDict)
+//                    Log.d(makeDict)
                     #endif
                     if let error = error {
-                        Log.e(error)
+//                        Log.e(error)
                         return completion(.failure(error))
                     }
-                    return completion(.success(data))
+                    if let data = data,
+                       let makeJson: T = try? T.decode(data: data) {
+//                        print("success json : \(makeJson)")
+                        return completion(.success(makeJson))
+                    }
                 }
             }
             newTask.resume()

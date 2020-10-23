@@ -15,16 +15,17 @@ class ViewController: UIViewController {
             "page": 1,
             "per_page": 10
         ]
-        NetworkManager.shared.request(String.self,
-                                      urlString: APIDomain.photos.url,
-                                      method: .get,
-                                      parameters: params) { (result) in
-            if case let .success(data) = result {
-                guard let data = data else { return }
-                let makeJson = try! JSONDecoder().decode([PhotoModel].self, from: data)
-                Log.osh("success json : \(makeJson)")
+        for i in 0...10 {
+            print("0. for in : \(i)")
+            NetworkManager.shared.request(PhotoModel.self,
+                                          index: i,
+                                          urlString: APIDomain.photos.url,
+                                          method: .get,
+                                          parameters: params) { (result) in
+                print("5. result : \(i)")
             }
         }
+        
     }
 
 }
