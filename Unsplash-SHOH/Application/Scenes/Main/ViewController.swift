@@ -11,16 +11,21 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-//        NetworkManager.shared.request(String.self, urlString: "", method: <#T##NetworkManager.HTTPMethod#>, completion: <#T##(Result<Data?, Error>) -> ()#>)
-        
-        
-        let findUrl = Bundle.main.url(forResource: "UserJson", withExtension: "json")!
-        let makeData = try! Data(contentsOf: findUrl)
-        let makeJson = try! JSONDecoder().decode(PhotoUser.self, from: makeData)
-        print(makeJson)
+        let params: [String: Any] = [
+            "page": 1,
+            "per_page": 10
+        ]
+        NetworkManager.shared.request(String.self,
+                                      urlString: APIDomain.photos.url,
+                                      method: .get,
+                                      parameters: params) { (result) in
+            if case let .success(data) = result {
+                guard let data = data else { return }
+                let makeJson = try! JSONDecoder().decode([PhotoModel].self, from: data)
+                Log.osh("success json : \(makeJson)")
+            }
+        }
     }
-
 
 }
 

@@ -22,6 +22,9 @@
 		CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A6254185A900132C1A /* PhotoUser.swift */; };
 		CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */; };
 		CB99FE67254270A3004C15EB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */; };
+		CB99FE8B25429AC5004C15EB /* APIDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE8A25429AC5004C15EB /* APIDomain.swift */; };
+		CB99FE942542A14C004C15EB /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE932542A14C004C15EB /* Log.swift */; };
+		CB99FE9A2542A617004C15EB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE992542A617004C15EB /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +66,9 @@
 		CB6855A6254185A900132C1A /* PhotoUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUser.swift; sourceTree = "<group>"; };
 		CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyedDecodingContainer+Extensions.swift"; sourceTree = "<group>"; };
 		CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		CB99FE8A25429AC5004C15EB /* APIDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDomain.swift; sourceTree = "<group>"; };
+		CB99FE932542A14C004C15EB /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		CB99FE992542A617004C15EB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +183,7 @@
 		CB6855842541526800132C1A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				CB99FE922542A142004C15EB /* Logs */,
 				CB99FE5A25426B6D004C15EB /* Extensions */,
 				CB6855852541527C00132C1A /* Managers */,
 			);
@@ -229,6 +236,8 @@
 		CB99FE7E25428D37004C15EB /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				CB99FE982542A60B004C15EB /* Constants */,
+				CB99FE8925429AB9004C15EB /* API */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -243,6 +252,30 @@
 				CB6855842541526800132C1A /* Utils */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		CB99FE8925429AB9004C15EB /* API */ = {
+			isa = PBXGroup;
+			children = (
+				CB99FE8A25429AC5004C15EB /* APIDomain.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		CB99FE922542A142004C15EB /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				CB99FE932542A14C004C15EB /* Log.swift */,
+			);
+			path = Logs;
+			sourceTree = "<group>";
+		};
+		CB99FE982542A60B004C15EB /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				CB99FE992542A617004C15EB /* Constants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,9 +410,12 @@
 			files = (
 				CB68559D2541827500132C1A /* PhotoModel.swift in Sources */,
 				CB99FE67254270A3004C15EB /* UIColor+Extensions.swift in Sources */,
+				CB99FE942542A14C004C15EB /* Log.swift in Sources */,
 				CB68553925411B4B00132C1A /* ViewController.swift in Sources */,
 				CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */,
+				CB99FE8B25429AC5004C15EB /* APIDomain.swift in Sources */,
 				CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */,
+				CB99FE9A2542A617004C15EB /* Constants.swift in Sources */,
 				CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */,
 				CB6855872541528900132C1A /* NetworkManager.swift in Sources */,
 				CB6855A22541858400132C1A /* PhotoExif.swift in Sources */,
