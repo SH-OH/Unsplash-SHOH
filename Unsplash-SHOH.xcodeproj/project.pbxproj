@@ -22,7 +22,6 @@
 		CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A6254185A900132C1A /* PhotoUser.swift */; };
 		CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */; };
 		CB99FE67254270A3004C15EB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */; };
-		CB99FE7425427D4D004C15EB /* UserJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CB99FE7325427D4D004C15EB /* UserJson.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +63,6 @@
 		CB6855A6254185A900132C1A /* PhotoUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUser.swift; sourceTree = "<group>"; };
 		CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyedDecodingContainer+Extensions.swift"; sourceTree = "<group>"; };
 		CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		CB99FE7325427D4D004C15EB /* UserJson.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = UserJson.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,11 +114,9 @@
 			isa = PBXGroup;
 			children = (
 				CB68554225411B4F00132C1A /* Info.plist */,
-				CB6855752541488200132C1A /* App */,
+				CB99FE7F25428D59004C15EB /* Application */,
 				CB68559A2541823C00132C1A /* Domain */,
-				CB6855762541488D00132C1A /* Resources */,
-				CB685577254148B800132C1A /* Scenes */,
-				CB6855842541526800132C1A /* Utils */,
+				CB99FE7E25428D37004C15EB /* Platform */,
 			);
 			path = "Unsplash-SHOH";
 			sourceTree = "<group>";
@@ -217,7 +213,6 @@
 			children = (
 				CB6855A12541858400132C1A /* PhotoExif.swift */,
 				CB68559C2541827500132C1A /* PhotoModel.swift */,
-				CB99FE7325427D4D004C15EB /* UserJson.json */,
 				CB6855A6254185A900132C1A /* PhotoUser.swift */,
 			);
 			path = Models;
@@ -230,6 +225,24 @@
 				CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CB99FE7E25428D37004C15EB /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		CB99FE7F25428D59004C15EB /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				CB6855752541488200132C1A /* App */,
+				CB6855762541488D00132C1A /* Resources */,
+				CB685577254148B800132C1A /* Scenes */,
+				CB6855842541526800132C1A /* Utils */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,7 +350,6 @@
 			files = (
 				CB68554125411B4F00132C1A /* LaunchScreen.storyboard in Resources */,
 				CB68553E25411B4F00132C1A /* Assets.xcassets in Resources */,
-				CB99FE7425427D4D004C15EB /* UserJson.json in Resources */,
 				CB68553C25411B4B00132C1A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
