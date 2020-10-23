@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB063B4F254311A500EF9112 /* DataRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB063B4E254311A500EF9112 /* DataRequester.swift */; };
+		CB063B542543143D00EF9112 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB063B532543143D00EF9112 /* ImageDownloader.swift */; };
 		CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68553425411B4B00132C1A /* AppDelegate.swift */; };
 		CB68553725411B4B00132C1A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68553625411B4B00132C1A /* SceneDelegate.swift */; };
 		CB68553925411B4B00132C1A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68553825411B4B00132C1A /* ViewController.swift */; };
@@ -20,6 +22,7 @@
 		CB68559D2541827500132C1A /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68559C2541827500132C1A /* PhotoModel.swift */; };
 		CB6855A22541858400132C1A /* PhotoExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A12541858400132C1A /* PhotoExif.swift */; };
 		CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A6254185A900132C1A /* PhotoUser.swift */; };
+		CB715B76254325A400E393D9 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB715B75254325A400E393D9 /* ImageCache.swift */; };
 		CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */; };
 		CB99FE67254270A3004C15EB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */; };
 		CB99FE8B25429AC5004C15EB /* APIDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE8A25429AC5004C15EB /* APIDomain.swift */; };
@@ -46,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB063B4E254311A500EF9112 /* DataRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequester.swift; sourceTree = "<group>"; };
+		CB063B532543143D00EF9112 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		CB68553125411B4A00132C1A /* Unsplash-SHOH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Unsplash-SHOH.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB68553425411B4B00132C1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB68553625411B4B00132C1A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +70,7 @@
 		CB68559C2541827500132C1A /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 		CB6855A12541858400132C1A /* PhotoExif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoExif.swift; sourceTree = "<group>"; };
 		CB6855A6254185A900132C1A /* PhotoUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUser.swift; sourceTree = "<group>"; };
+		CB715B75254325A400E393D9 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyedDecodingContainer+Extensions.swift"; sourceTree = "<group>"; };
 		CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		CB99FE8A25429AC5004C15EB /* APIDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDomain.swift; sourceTree = "<group>"; };
@@ -98,6 +104,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB004D55254324EE00EEB66C /* ImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				CB715B75254325A400E393D9 /* ImageCache.swift */,
+			);
+			path = ImageCache;
+			sourceTree = "<group>";
+		};
 		CB68552825411B4A00132C1A = {
 			isa = PBXGroup;
 			children = (
@@ -195,17 +209,21 @@
 		CB6855852541527C00132C1A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				CB68558E254152AE00132C1A /* NetworkManager */,
+				CB7339B825432F2900C09F9A /* Queue */,
+				CB004D55254324EE00EEB66C /* ImageCache */,
+				CB68558E254152AE00132C1A /* Network */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		CB68558E254152AE00132C1A /* NetworkManager */ = {
+		CB68558E254152AE00132C1A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				CB063B4E254311A500EF9112 /* DataRequester.swift */,
+				CB063B532543143D00EF9112 /* ImageDownloader.swift */,
 				CB6855862541528900132C1A /* NetworkManager.swift */,
 			);
-			path = NetworkManager;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		CB68559A2541823C00132C1A /* Domain */ = {
@@ -224,6 +242,13 @@
 				CB6855A6254185A900132C1A /* PhotoUser.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		CB7339B825432F2900C09F9A /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Queue;
 			sourceTree = "<group>";
 		};
 		CB99FE5A25426B6D004C15EB /* Extensions */ = {
@@ -413,12 +438,15 @@
 			files = (
 				CB68559D2541827500132C1A /* PhotoModel.swift in Sources */,
 				CB99FE67254270A3004C15EB /* UIColor+Extensions.swift in Sources */,
+				CB715B76254325A400E393D9 /* ImageCache.swift in Sources */,
+				CB063B542543143D00EF9112 /* ImageDownloader.swift in Sources */,
 				CB99FE942542A14C004C15EB /* Log.swift in Sources */,
 				CB68553925411B4B00132C1A /* ViewController.swift in Sources */,
 				CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */,
 				CB99FE8B25429AC5004C15EB /* APIDomain.swift in Sources */,
 				CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */,
 				CB99FE9A2542A617004C15EB /* Constants.swift in Sources */,
+				CB063B4F254311A500EF9112 /* DataRequester.swift in Sources */,
 				CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */,
 				CB6855872541528900132C1A /* NetworkManager.swift in Sources */,
 				CB99FEA22542C212004C15EB /* Codable+Extensions.swift in Sources */,
