@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CB063B4F254311A500EF9112 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB063B4E254311A500EF9112 /* Provider.swift */; };
 		CB063B542543143D00EF9112 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB063B532543143D00EF9112 /* ImageDownloader.swift */; };
+		CB1176A52544398100B310AB /* ListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1176A42544398100B310AB /* ListLayout.swift */; };
+		CB1176AD254490C300B310AB /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1176AC254490C300B310AB /* Queue.swift */; };
 		CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68553425411B4B00132C1A /* AppDelegate.swift */; };
 		CB68553725411B4B00132C1A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68553625411B4B00132C1A /* SceneDelegate.swift */; };
 		CB68553925411B4B00132C1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB68553825411B4B00132C1A /* MainViewController.swift */; };
@@ -23,7 +25,6 @@
 		CB6855A22541858400132C1A /* PhotoExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A12541858400132C1A /* PhotoExif.swift */; };
 		CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6855A6254185A900132C1A /* PhotoUser.swift */; };
 		CB715B76254325A400E393D9 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB715B75254325A400E393D9 /* ImageCache.swift */; };
-		CB7339C32543430400C09F9A /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7339C22543430400C09F9A /* ViewModelType.swift */; };
 		CB7339CB254343EE00C09F9A /* Cell+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7339CA254343EE00C09F9A /* Cell+Extensions.swift */; };
 		CB7339D02543440F00C09F9A /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7339CF2543440F00C09F9A /* Reusable.swift */; };
 		CB7339E72543458800C09F9A /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7339E62543458800C09F9A /* LoadingViewController.swift */; };
@@ -60,6 +61,8 @@
 /* Begin PBXFileReference section */
 		CB063B4E254311A500EF9112 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		CB063B532543143D00EF9112 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		CB1176A42544398100B310AB /* ListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListLayout.swift; sourceTree = "<group>"; };
+		CB1176AC254490C300B310AB /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		CB68553125411B4A00132C1A /* Unsplash-SHOH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Unsplash-SHOH.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB68553425411B4B00132C1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB68553625411B4B00132C1A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,7 +83,6 @@
 		CB6855A12541858400132C1A /* PhotoExif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoExif.swift; sourceTree = "<group>"; };
 		CB6855A6254185A900132C1A /* PhotoUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUser.swift; sourceTree = "<group>"; };
 		CB715B75254325A400E393D9 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
-		CB7339C22543430400C09F9A /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		CB7339CA254343EE00C09F9A /* Cell+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cell+Extensions.swift"; sourceTree = "<group>"; };
 		CB7339CF2543440F00C09F9A /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		CB7339E62543458800C09F9A /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,14 @@
 				CB715B75254325A400E393D9 /* ImageCache.swift */,
 			);
 			path = ImageCache;
+			sourceTree = "<group>";
+		};
+		CB1176A32544396D00B310AB /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				CB1176A42544398100B310AB /* ListLayout.swift */,
+			);
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 		CB68552825411B4A00132C1A = {
@@ -210,6 +220,7 @@
 		CB685578254148C400132C1A /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				CB1176A32544396D00B310AB /* Layouts */,
 				CB733A3A254354DA00C09F9A /* ListCell */,
 				CB68553825411B4B00132C1A /* MainViewController.swift */,
 				CB68553A25411B4B00132C1A /* MainViewController.storyboard */,
@@ -269,6 +280,7 @@
 		CB7339B825432F2900C09F9A /* Queue */ = {
 			isa = PBXGroup;
 			children = (
+				CB1176AC254490C300B310AB /* Queue.swift */,
 			);
 			path = Queue;
 			sourceTree = "<group>";
@@ -277,7 +289,6 @@
 			isa = PBXGroup;
 			children = (
 				CB7339CF2543440F00C09F9A /* Reusable.swift */,
-				CB7339C22543430400C09F9A /* ViewModelType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -514,14 +525,15 @@
 				CB68553525411B4B00132C1A /* AppDelegate.swift in Sources */,
 				CB733A532543709800C09F9A /* Array+Extensions.swift in Sources */,
 				CB99FE8B25429AC5004C15EB /* APIDomain.swift in Sources */,
+				CB1176A52544398100B310AB /* ListLayout.swift in Sources */,
 				CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */,
 				CB7339CB254343EE00C09F9A /* Cell+Extensions.swift in Sources */,
 				CB99FE9A2542A617004C15EB /* Constants.swift in Sources */,
 				CB7339E72543458800C09F9A /* LoadingViewController.swift in Sources */,
+				CB1176AD254490C300B310AB /* Queue.swift in Sources */,
 				CB7339F22543464500C09F9A /* BaseViewController.swift in Sources */,
 				CB063B4F254311A500EF9112 /* Provider.swift in Sources */,
 				CB6855A7254185A900132C1A /* PhotoUser.swift in Sources */,
-				CB7339C32543430400C09F9A /* ViewModelType.swift in Sources */,
 				CB6855872541528900132C1A /* NetworkManager.swift in Sources */,
 				CB99FEA22542C212004C15EB /* Codable+Extensions.swift in Sources */,
 				CB6855A22541858400132C1A /* PhotoExif.swift in Sources */,

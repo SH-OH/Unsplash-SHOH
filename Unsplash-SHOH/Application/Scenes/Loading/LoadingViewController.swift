@@ -19,18 +19,28 @@ final class LoadingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         view.addSubview(activityIndicator)
         layout()
     }
     
     private func layout() {
-        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
-    func control(show: Bool, useLoading: Bool) {
-        guard useLoading else { return }
+    func control(parentViewController: UIViewController?,
+                 show: Bool,
+                 useLoading: Bool) {
+        guard let parentViewController = parentViewController else {
+            return
+        }
         DispatchQueue.main.async {
+            show
+                ? self.attach(parentViewController)
+                : self.dettach(parentViewController)
             if self.activityIndicator.isAnimating != show {
                 self.view.isHidden = !show
                 UIApplication.shared.isNetworkActivityIndicatorVisible = show
@@ -41,4 +51,23 @@ final class LoadingViewController: BaseViewController {
         }
     }
     
+    private func attach(_ parentViewController: UIViewController) {
+        if !parentViewController.children.contains(self) {
+            parentViewController.addChild(self)
+            parentViewController.view.addSubview(self.view)
+            NSLayoutConstraint.activate([
+                self.view.topAnchor.constraint(equalTo: parentViewController.view.topAnchor),
+                self.view.leadingAnchor.constraint(equalTo: parentViewController.view.leadingAnchor),
+                self.view.trailingAnchor.constraint(equalTo: parentViewController.view.trailingAnchor),
+                self.view.bottomAnchor.constraint(equalTo: parentViewController.view.bottomAnchor)
+            ])
+        }
+    }
+    
+    private func dettach(_ parentViewController: UIViewController) {
+        if parentViewController.children.contains(self) {
+            parentViewController.willMove(toParent: nil)
+            parentViewController.removeFromParent()
+        }
+    }
 }

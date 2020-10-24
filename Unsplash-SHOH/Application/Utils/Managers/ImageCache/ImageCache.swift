@@ -11,8 +11,10 @@ import UIKit.UIImage
 struct ImageCache {
     
     enum Config {
-        static let countLimit: Int = 200
+        static let countLimit: Int = 500
     }
+    
+    static let shared = ImageCache()
     
     private let lock: NSLock = NSLock()
     

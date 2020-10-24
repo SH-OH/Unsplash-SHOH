@@ -12,7 +12,7 @@ final class ImageDownloader {
     
     var task: URLSessionDataTask?
     
-    private let imageCache: ImageCache = ImageCache()
+    private var imageCache: ImageCache = ImageCache.shared
     
     private func prepareURLRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url,
@@ -22,28 +22,32 @@ final class ImageDownloader {
         return request
     }
     
-    func retriveImage(_ url: URL, completion: @escaping (UIImage?) -> ()) {
+    func retriveImage(_ url: URL,
+                      completion: @escaping (UIImage?, Bool) -> ()) {
         guard task == nil else {
             return
         }
         if let cachedImage = self.imageCache.getImage(url.absoluteString) {
-            return completion(cachedImage)
+            DispatchQueue.main.async {
+                completion(cachedImage, true)
+            }
+            return
         }
         let request: URLRequest = self.prepareURLRequest(url)
-        task = NetworkManager.shared.session.dataTask(with: request) { (data, _, error) in
+        task = NetworkManager.shared.session.dataTask(with: request) { [self] (data, _, error) in
             self.task = nil
-            NetworkManager.Queue.image(url.absoluteString).queue.async {
+            Queue.image(url.absoluteString).queue.async {
                 guard error == nil,
                       let data = data,
                       let image = UIImage(data: data) else {
                     DispatchQueue.main.async {
-                        completion(nil)
+                        completion(nil, false)
                     }
                     return
                 }
                 self.imageCache.setImage(url.absoluteString, image: image)
                 DispatchQueue.main.async {
-                    completion(image)
+                    completion(image, false)
                 }
             }
         }

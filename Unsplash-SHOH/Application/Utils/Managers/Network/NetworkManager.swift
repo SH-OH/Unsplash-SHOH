@@ -31,20 +31,6 @@ final class NetworkManager {
         }
     }
     
-    enum Queue {
-        case request
-        case image(String)
-        
-        var queue: DispatchQueue {
-            switch self {
-            case .request:
-                return DispatchQueue(label: "queue.NetworkManager.request")
-            case .image(let urlString):
-                return DispatchQueue(label: "queue.NetworkManager.image.\(urlString)")
-            }
-        }
-    }
-    
     var timeout: Double = 20.0
     
     static let shared = NetworkManager()
@@ -61,8 +47,12 @@ final class NetworkManager {
 
 // MARK: - NetworkActivity
 extension NetworkManager {
-    func showNetworkActivity(_ show: Bool, useLoading: Bool) {
+    func showNetworkActivity(_ navigationController: UIViewController?,
+                             show: Bool,
+                             useLoading: Bool) {
         guard useLoading else { return }
-        loadingView.control(show: show, useLoading: useLoading)
+        loadingView.control(parentViewController: navigationController,
+                            show: show,
+                            useLoading: useLoading)
     }
 }

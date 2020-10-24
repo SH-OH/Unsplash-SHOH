@@ -10,15 +10,21 @@ import UIKit
 
 final class Provider {
     
-    var task: URLSessionDataTask?
-    
     enum Result<Decodable, Error> {
         case success(Decodable)
         case failure(Error)
     }
     
+    var task: URLSessionDataTask?
+    
+    private let navigationController: BaseNavigationController
+    
+    init(_ navigationController: BaseNavigationController) {
+        self.navigationController = navigationController
+    }
+    
     private func prepareURLComponenets(_ urlString: String,
-                                    parameters: [String: Any]?) -> URLComponents? {
+                                       parameters: [String: Any]?) -> URLComponents? {
         var components = URLComponents(string: urlString)
         if let parameters = parameters {
             var makeParameters = [URLQueryItem]()
@@ -56,12 +62,14 @@ final class Provider {
             return completion(.failure(NetworkManager.RequestError.invalidURL))
         }
         let request: URLRequest = self.prepareURLRequest(url, method: method)
-        NetworkManager.shared.showNetworkActivity(true,
+        NetworkManager.shared.showNetworkActivity(self.navigationController,
+                                                  show: true,
                                                   useLoading: useLoading)
         task = NetworkManager.shared.session.dataTask(with: request) { (data, response, error) in
-            NetworkManager.shared.showNetworkActivity(false,
+            NetworkManager.shared.showNetworkActivity(self.navigationController,
+                                                      show: false,
                                                       useLoading: useLoading)
-            NetworkManager.Queue.request.queue.async {
+            Queue.request.queue.async {
                 #if DEBUG
                 let response: String = String(data: data ?? .init(), encoding: .utf8) ?? "NO DATA"
                 let makeDict: [String: Any] = [
@@ -69,7 +77,7 @@ final class Provider {
                     "02.parameters": parameters ?? "NO PARAMETERS",
                     "03.Response": response.isEmpty ? "NO DATA" : response
                 ]
-//                Log.d(makeDict)
+                //                Log.d(makeDict)
                 #endif
                 if let error = error {
                     Log.e(error)
@@ -77,7 +85,7 @@ final class Provider {
                 }
                 if let data = data,
                    let makeJson: T = try? T.decode(data: data) {
-//                    Log.osh("success json : \(makeJson)")
+                    //                    Log.osh("success json : \(makeJson)")
                     return completion(.success(makeJson))
                 } else {
                     return completion(.failure(NetworkManager.RequestError.failedParsing))

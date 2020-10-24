@@ -21,12 +21,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kHd-dh-rnH">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2ih-Zx-OIN">
-                                    <size key="itemSize" width="414" height="546"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
+                                <collectionViewLayout key="collectionViewLayout" id="NhM-nf-iyy" customClass="ListLayout" customModule="Unsplash_SHOH" customModuleProvider="target"/>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListCell" id="Rsc-h0-Isw" customClass="ListCell" customModule="Unsplash_SHOH" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="546"/>
@@ -48,6 +43,7 @@
                                             <color key="backgroundColor" systemColor="systemPinkColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="p1n-Uj-U2j" secondAttribute="bottom" id="CIT-QO-vB2"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XJk-0R-flB" secondAttribute="trailing" constant="20" id="He0-sQ-Zgu"/>
                                                 <constraint firstAttribute="bottom" secondItem="XJk-0R-flB" secondAttribute="bottom" constant="15" id="Snp-jQ-oVi"/>
                                                 <constraint firstAttribute="trailing" secondItem="p1n-Uj-U2j" secondAttribute="trailing" id="SoQ-7N-iLB"/>
                                                 <constraint firstItem="p1n-Uj-U2j" firstAttribute="top" secondItem="jkp-DJ-moA" secondAttribute="top" id="hEj-xU-pd3"/>
