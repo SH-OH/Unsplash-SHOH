@@ -28,7 +28,10 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QJg-KS-t64" userLabel="Close Button">
-                                        <rect key="frame" x="20" y="0.0" width="21" height="60"/>
+                                        <rect key="frame" x="10" y="0.0" width="40" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="DVl-U8-rW0"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="xmark" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -38,7 +41,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zwq-Cg-C2L" userLabel="Share Button">
-                                        <rect key="frame" x="371" y="0.0" width="23" height="60"/>
+                                        <rect key="frame" x="364" y="0.0" width="40" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="f02-EI-R1u"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="square.and.arrow.up" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -52,21 +58,26 @@
                                     <constraint firstItem="QJg-KS-t64" firstAttribute="centerY" secondItem="Qpa-ne-Ipg" secondAttribute="centerY" id="KfV-EZ-Gcl"/>
                                     <constraint firstItem="QJg-KS-t64" firstAttribute="top" secondItem="Qpa-ne-Ipg" secondAttribute="top" id="QtI-aN-oca"/>
                                     <constraint firstItem="x6F-Pu-6cK" firstAttribute="top" secondItem="Qpa-ne-Ipg" secondAttribute="top" id="SP2-Yj-8Xa"/>
-                                    <constraint firstAttribute="trailing" secondItem="Zwq-Cg-C2L" secondAttribute="trailing" constant="20" id="eEH-Jd-RmR"/>
+                                    <constraint firstAttribute="trailing" secondItem="Zwq-Cg-C2L" secondAttribute="trailing" constant="10" id="eEH-Jd-RmR"/>
                                     <constraint firstAttribute="height" constant="60" id="kY6-6u-LnE"/>
                                     <constraint firstItem="x6F-Pu-6cK" firstAttribute="centerX" secondItem="Qpa-ne-Ipg" secondAttribute="centerX" id="lEK-uq-WA1"/>
                                     <constraint firstAttribute="bottom" secondItem="x6F-Pu-6cK" secondAttribute="bottom" id="tst-kb-yjf"/>
                                     <constraint firstAttribute="bottom" secondItem="QJg-KS-t64" secondAttribute="bottom" id="uOf-ko-T1n"/>
-                                    <constraint firstItem="QJg-KS-t64" firstAttribute="leading" secondItem="Qpa-ne-Ipg" secondAttribute="leading" constant="20" id="v8X-Qt-h6e"/>
+                                    <constraint firstItem="QJg-KS-t64" firstAttribute="leading" secondItem="Qpa-ne-Ipg" secondAttribute="leading" constant="10" id="v8X-Qt-h6e"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VJd-Sq-OgB">
                                 <rect key="frame" x="0.0" y="104" width="414" height="792"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewLayout key="collectionViewLayout" id="ZL9-0C-l4b" customClass="ListLayout" customModule="Unsplash_SHOH" customModuleProvider="target"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GCX-k4-or7" customClass="ListLayout" customModule="Unsplash_SHOH" customModuleProvider="target">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DetailCell" id="lVy-OX-f31" customClass="DetailCell" customModule="Unsplash_SHOH" customModuleProvider="target">
-                                        <rect key="frame" x="0.66666666666666663" y="0.0" width="413" height="729"/>
+                                        <rect key="frame" x="0.0" y="31.666666666666668" width="413" height="729"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vO1-hh-Buh">
                                             <rect key="frame" x="0.0" y="0.0" width="413" height="729"/>

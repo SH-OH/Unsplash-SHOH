@@ -48,8 +48,6 @@ final class DetailViewController: BaseViewController {
            let photoModels = photoModels {
             var scrollPosition: UICollectionView.ScrollPosition = .centeredVertically
             switch visibleIndex.item {
-            case 0:
-                scrollPosition = .top
             case photoModels.count-1:
                 scrollPosition = .bottom
             default:

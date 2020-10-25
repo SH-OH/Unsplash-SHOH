@@ -47,9 +47,6 @@ final class ListLayoutCollectionViewFactory: NSObject {
         targetCV.dataSource = self
         targetCV.delegate = self
         if let layout = targetCV.collectionViewLayout as? ListLayout {
-            if dataSourceType == .Detail {
-                layout.scrollDirection = .horizontal
-            }
             layout.delegate = self
         }
     }
@@ -59,6 +56,10 @@ final class ListLayoutCollectionViewFactory: NSObject {
         PhotoUseCase().getPhotoList(oldModels: photoModels) { [self] (resultModels) in
             delegate?.photoModels = resultModels
         }
+    }
+    
+    func findDataSourceType() -> DataSourceType {
+        return dataSourceType
     }
     
 }
@@ -93,6 +94,22 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+//        guard dataSourceType == .Main else { return .init() }
+        Log.osh("indexPath : \(indexPath)")
+        
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                         withReuseIdentifier: "MainHeaderView",
+                                                                         for: indexPath)
+//        let headerView = collectionView.dequeue(UICollectionReusableView.self,
+//                                                kind: kind,
+//                                                for: indexPath)
+        
+        return headerView
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -107,6 +124,14 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        guard dataSourceType == .Main else { return .zero }
+        let width: CGFloat = collectionView.bounds.width
+        return CGSize(width: width, height: width)
     }
     
     func collectionView(_ collectionView: UICollectionView,

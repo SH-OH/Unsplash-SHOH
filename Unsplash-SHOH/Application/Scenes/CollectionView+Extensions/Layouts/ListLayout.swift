@@ -14,7 +14,16 @@ protocol ListLayoutDelegate: class {
 
 final class ListLayout: UICollectionViewFlowLayout {
     
-    typealias CacheTypeLayoutDictionary = [IndexPath: UICollectionViewLayoutAttributes]
+    enum CacheKey: Hashable {
+        case header
+        case cell(Int)
+        
+        var stringValue: String {
+            return "\(self)"
+        }
+    }
+    
+    typealias CacheTypeLayoutDictionary = [CacheKey: UICollectionViewLayoutAttributes]
     
     weak var delegate: ListLayoutDelegate?
     
@@ -38,20 +47,35 @@ final class ListLayout: UICollectionViewFlowLayout {
             return
         }
         
+        let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.findDataSourceType() ?? .Main
+        let photoWidth: CGFloat = collectionView.bounds.width
+        
         /// more 시 바로 offset에 + 하기 위해, offset start value를 현재 collectionView의 size로 설정.
         var xOffset: CGFloat = contentWidth
         var yOffset: CGFloat = contentHeight
         
-        let photoWidth: CGFloat = collectionView.bounds.width
+        // 메인 섹션 헤더 layoutAttributes 만들기.
+        if cache[.header] == nil && dataSourceType == .Main {
+            let headerSize: CGSize = CGSize(width: photoWidth,
+                                            height: photoWidth)
+            let kind: String = UICollectionView.elementKindSectionHeader
+            let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: kind,
+                                                                    with: IndexPath(item: 0, section: 0))
+            headerAttributes.zIndex = 1
+            headerAttributes.frame = CGRect(origin: .zero, size: headerSize)
+            cache.updateValue(headerAttributes, forKey: .header)
+            yOffset = photoWidth
+        }
         
-        // 2. 추가된 item만 layoutAttributes 만들기.
-        for item in cache.count..<numberOfItems {
+        // 2. Cell 리스트 중에서, 추가된 item만 layoutAttributes 만들기.
+        let cellCacheListCount: Int = cache.filter({ $0.key.stringValue != "header" }).count
+        for item in cellCacheListCount..<numberOfItems {
             let indexPath: IndexPath = IndexPath(item: item, section: 0)
             
             // 2-1. 사진 resize된 height로 셀 frame 만들기.
             let photoHeight: CGFloat = delegate.collectionView(collectionView,
                                                                photoHeightForItemAt: indexPath)
-            // 2-1-1. 상세 화면, 이미지 가운데 정렬.
+            // 2-1-1. Horizontal 대상, 이미지 가운데 정렬. (상세 화면)
             if scrollDirection == .horizontal {
                 let centerYOffsetByMaxY: CGFloat = (collectionView.frame.maxY-photoHeight)/2
                 yOffset = centerYOffsetByMaxY - collectionView.frame.minY
@@ -63,13 +87,14 @@ final class ListLayout: UICollectionViewFlowLayout {
             // 2-2. IndexPath Key Type의 Dictionary Cache에 Attributes 만들어서 저장.
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
-            cache.updateValue(attributes, forKey: indexPath)
+            cache.updateValue(attributes, forKey: .cell(item))
             
             // 2-3. 위에서 구한 cell frame으로 CollectionView total Offset(for contentsSize) 구하기.
-            if scrollDirection == .vertical {
+            switch dataSourceType {
+            case .Main:
                 contentHeight = frame.maxY
                 yOffset = yOffset + photoHeight
-            } else {
+            case .Detail:
                 contentWidth = frame.maxX
                 xOffset = xOffset + photoWidth
                 yOffset = 0
@@ -103,7 +128,8 @@ final class ListLayout: UICollectionViewFlowLayout {
         
         // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
         for index in firstFrameIndex..<lastFrameIndex {
-            if let attr = self.cache[IndexPath(item: index, section: 0)] {
+            let key = CacheKey.cell(index)
+            if let attr = self.cache[key] {
                 visibleLayoutAttributes.append(attr)
             }
         }
@@ -113,11 +139,11 @@ final class ListLayout: UICollectionViewFlowLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         print(#function)
-        return cache[indexPath]
+        return cache[.cell(indexPath.item)]
     }
     
     private func frameByCachedLayoutAttribute(_ index: Int) -> CGRect {
-        return cache[IndexPath(item: index, section: 0)]?.frame ?? .zero
+        return cache[.cell(index)]?.frame ?? .zero
     }
     
 }

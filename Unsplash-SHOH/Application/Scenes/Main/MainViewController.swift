@@ -13,7 +13,6 @@ class MainViewController: BaseViewController {
     
     var photoModels: [PhotoModel]? = [] {
         didSet {
-            Log.osh("Main model : \(photoModels?.count)")
             self.reloadData()
         }
     }
