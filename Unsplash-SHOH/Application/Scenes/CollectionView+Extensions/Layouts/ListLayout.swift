@@ -12,7 +12,7 @@ protocol ListLayoutDelegate: class {
                         heightForItemAt indexPath:IndexPath) -> CGFloat
 }
 
-final class ListLayout: UICollectionViewLayout {
+final class ListLayout: UICollectionViewFlowLayout {
     
     typealias CacheTypeLayoutDictionary = [IndexPath: UICollectionViewLayoutAttributes]
     
