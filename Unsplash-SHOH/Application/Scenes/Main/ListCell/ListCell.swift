@@ -21,7 +21,7 @@ final class ListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        listImage.image = nil 
+        listImage.image = nil
     }
     
     func configure(_ item: PhotoModel,
@@ -38,11 +38,18 @@ final class ListCell: UICollectionViewCell {
                                                   show: true,
                                                   useLoading: activityData.isFirst)
         imageDownloader.retriveImage(url) { [self] (image, cached) in
-            self.listImage.image = image
             if !cached {
-                NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
-                                                          show: false,
-                                                          useLoading: activityData.isFirst)
+                UIView.transition(with: self.listImage,
+                                  duration: 0.3,
+                                  options: .transitionCrossDissolve) {
+                    self.listImage.image = image
+                } completion: { (_) in
+                    NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
+                                                              show: false,
+                                                              useLoading: activityData.isFirst)
+                }
+            } else {
+                self.listImage.image = image
             }
         }
     }
