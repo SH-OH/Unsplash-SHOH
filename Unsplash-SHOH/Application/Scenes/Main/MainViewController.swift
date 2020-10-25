@@ -11,16 +11,18 @@ class MainViewController: BaseViewController {
     
     @IBOutlet private weak var listCollectionView: UICollectionView!
     
-    var photoModels: [PhotoModel] = [] {
+    var photoModels: [PhotoModel]? = [] {
         didSet {
             self.reloadData()
         }
     }
     
     private lazy var delegateFactory: ListLayoutCollectionViewFactory = {
-        return ListLayoutCollectionViewFactory(self,
-                          targetCV: listCollectionView,
-                          type: .Main)
+        let factory = ListLayoutCollectionViewFactory(self,
+                                                      targetCV: listCollectionView,
+                                                      type: .Main)
+        factory.parentController = self.navigationController()
+        return factory
     }()
     
     override func viewDidLoad() {
@@ -46,8 +48,4 @@ extension MainViewController {
 }
 
 // MARK: - ListLayoutCollectionViewFactoryDelegate
-extension MainViewController: ListLayoutCollectionViewFactoryDelegate {
-    var parentController: UIViewController {
-        return self.navigationController()
-    }
-}
+extension MainViewController: ListLayoutCollectionViewFactoryDelegate {}

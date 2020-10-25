@@ -17,12 +17,6 @@ final class Provider {
     
     var task: URLSessionDataTask?
     
-    private let parentController: UIViewController
-    
-    init(_ parentController: UIViewController) {
-        self.parentController = parentController
-    }
-    
     private func prepareURLComponenets(_ urlString: String,
                                        parameters: [String: Any]?) -> URLComponents? {
         var components = URLComponents(string: urlString)
@@ -50,7 +44,6 @@ final class Provider {
                                urlString: String,
                                method: NetworkManager.HTTPMethod,
                                parameters: [String: Any]?,
-                               useLoading: Bool,
                                completion: @escaping (Result<T, Error>) -> ()) {
         guard task == nil else {
             return
@@ -62,13 +55,7 @@ final class Provider {
             return completion(.failure(NetworkManager.RequestError.invalidURL))
         }
         let request: URLRequest = self.prepareURLRequest(url, method: method)
-        NetworkManager.shared.showNetworkActivity(self.parentController,
-                                                  show: true,
-                                                  useLoading: useLoading)
         task = NetworkManager.shared.session.dataTask(with: request) { (data, response, error) in
-            NetworkManager.shared.showNetworkActivity(self.parentController,
-                                                      show: false,
-                                                      useLoading: useLoading)
             Queue.request.queue.async {
                 #if DEBUG
                 let response: String = String(data: data ?? .init(), encoding: .utf8) ?? "NO DATA"

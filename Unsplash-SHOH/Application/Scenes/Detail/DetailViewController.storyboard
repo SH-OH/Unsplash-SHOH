@@ -13,7 +13,7 @@
         <!--Detail View Controller-->
         <scene sceneID="zKq-Zw-S0G">
             <objects>
-                <viewController storyboardIdentifier="DetailViewController" id="fKc-KS-Jgb" customClass="DetailViewController" customModule="Unsplash_SHOH" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="fKc-KS-Jgb" customClass="DetailViewController" customModule="Unsplash_SHOH" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jqH-eV-9FO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -34,6 +34,9 @@
                                         <state key="normal" image="xmark" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                         </state>
+                                        <connections>
+                                            <action selector="closeAction:" destination="fKc-KS-Jgb" eventType="touchUpInside" id="Vvp-BQ-6zo"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zwq-Cg-C2L" userLabel="Share Button">
                                         <rect key="frame" x="371" y="17" width="23" height="26"/>

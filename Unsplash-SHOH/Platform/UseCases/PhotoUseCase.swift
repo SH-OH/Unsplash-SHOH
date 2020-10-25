@@ -9,15 +9,10 @@ import UIKit.UIViewController
 
 struct PhotoUseCase {
     
-    private let provider: Provider
-    
-    init(_ parentController: UIViewController) {
-        self.provider = Provider(parentController)
-    }
+    private let provider: Provider = .init()
     
     func getPhotoList(oldModels: [PhotoModel],
                       completion: @escaping ([PhotoModel]) -> ()) {
-        Log.osh("oldModel : \(oldModels)")
         let perPage: Int = 30
         let page: Int = self.compareModelCountToPerPage(oldModels.count,
                                                         perPage)
@@ -29,8 +24,7 @@ struct PhotoUseCase {
         provider.request([PhotoModel].self,
                           urlString: APIDomain.photos.url,
                           method: .get,
-                          parameters: params,
-                          useLoading: false) { (result) in
+                          parameters: params) { (result) in
             if case let .success(newModels) = result {
                 let result: [PhotoModel] = oldModels + newModels
                 completion(result)
