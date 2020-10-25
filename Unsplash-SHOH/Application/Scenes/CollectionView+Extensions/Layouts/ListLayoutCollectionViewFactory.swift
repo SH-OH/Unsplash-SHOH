@@ -20,9 +20,11 @@ final class ListLayoutCollectionViewFactory: NSObject {
     weak var delegate: ListLayoutCollectionViewFactoryDelegate?
     
     var parentController: UIViewController?
+    var selectedIndexPath: IndexPath?
     
     /// 메인 화면 첫 진입으로 셀 이미지 로딩 보여주기 위한 Flag
-    private var isFirstDownloadForLoading: Bool = true
+    /// 상세 화면 시작 위치 설정을 위한 Flag
+    private var isFirstLoadFlag: Bool = true
     
     private let dataSourceType: DataSourceType
     
@@ -33,7 +35,10 @@ final class ListLayoutCollectionViewFactory: NSObject {
         super.init()
         self.setDelegate(delegate,
                          targetCV: targetCV)
-        
+    }
+    
+    deinit {
+        print("\(dataSourceType) Factory deinit !!!!!!!!!!!")
     }
     
     private func setDelegate(_ delegate: ListLayoutCollectionViewFactoryDelegate,
@@ -42,6 +47,9 @@ final class ListLayoutCollectionViewFactory: NSObject {
         targetCV.dataSource = self
         targetCV.delegate = self
         if let layout = targetCV.collectionViewLayout as? ListLayout {
+            if dataSourceType == .Detail {
+                layout.scrollDirection = .horizontal
+            }
             layout.delegate = self
         }
     }
@@ -68,17 +76,21 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
         case .Main:
             let cell = collectionView.dequeue(MainCell.self, for: indexPath)
             if let item = self.delegate?.photoModels?[safe: indexPath.item] {
-                let isFirst: Bool = indexPath.item == 0 && self.isFirstDownloadForLoading
-                let data = MainCell.ForActivityData(isFirst: isFirst,
-                                                    parentViewController: self.parentController)
+                let isFirst: Bool = indexPath.item == 0 && self.isFirstLoadFlag
+                let data = ImageDownloadUseCase.ForActivityData(isFirst: isFirst,
+                                                                parentViewController: self.parentController)
                 cell.configure(item, for: data)
-                if self.isFirstDownloadForLoading {
-                    self.isFirstDownloadForLoading = false
+                if self.isFirstLoadFlag {
+                    self.isFirstLoadFlag = false
                 }
             }
             return cell
         case .Detail:
-            return .init()
+            let cell = collectionView.dequeue(DetailCell.self, for: indexPath)
+            if let item = self.delegate?.photoModels?[safe: indexPath.item] {
+                cell.configure(item)
+            }
+            return cell
         }
     }
 }
@@ -104,6 +116,8 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
         case .Main:
             let detail = DetailViewController.storyboard()
             detail.photoModels = delegate?.photoModels
+            detail.mainCollectionView = collectionView
+            detail.initialSelectedIndexPath = indexPath
             self.parentController?.present(detail, animated: true, completion: nil)
         case .Detail:
             break
@@ -120,7 +134,19 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
                 self.requestGetPhotoList()
             }
         case .Detail:
-            break
+            if self.isFirstLoadFlag && indexPath.item == 0 {
+                if let selectedIndexPath = selectedIndexPath {
+                    collectionView.scrollToItem(at: selectedIndexPath,
+                                                at: .centeredHorizontally,
+                                                animated: false)
+                }
+                self.isFirstLoadFlag = false
+                return
+            }
+            let prefetchIndex: Bool = indexPath.item == photoModels.count-15
+            if prefetchIndex {
+                self.requestGetPhotoList()
+            }
         }
     }
 }
@@ -128,7 +154,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
 // MARK: - ListLayoutDelegate
 extension ListLayoutCollectionViewFactory: ListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView,
-                        heightForItemAt indexPath: IndexPath) -> CGFloat {
+                        photoHeightForItemAt indexPath: IndexPath) -> CGFloat {
         guard let item = delegate?.photoModels?[safe: indexPath.item] else { return .zero }
         let width = collectionView.bounds.width
         let height = CGFloat(item.height) * width / CGFloat(item.width)

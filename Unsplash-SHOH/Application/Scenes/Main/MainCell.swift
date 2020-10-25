@@ -5,7 +5,7 @@
 //  Created by Oh Sangho on 2020/10/24.
 //
 
-import UIKit
+import UIKit.UICollectionViewCell
 
 final class MainCell: UICollectionViewCell {
     
@@ -18,6 +18,7 @@ final class MainCell: UICollectionViewCell {
     @IBOutlet private weak var listImageNameLb: UILabel!
     
     private let imageDownloader: ImageDownloader = .init()
+    private let imageDownloadUseCase: ImageDownloadUseCase = .init()
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -25,10 +26,13 @@ final class MainCell: UICollectionViewCell {
     }
     
     func configure(_ item: PhotoModel,
-                   for activityData: ForActivityData) {
+                   for activityData: ImageDownloadUseCase.ForActivityData) {
         listImageNameLb.text = makeName(item.user)
         listImage.backgroundColor = item.color
-        downloadImage(item, for: activityData)
+//        downloadImage(item, for: activityData)
+        imageDownloadUseCase.downloadImage(item,
+                                           target: listImage,
+                                           for: activityData)
     }
     
     private func downloadImage(_ item: PhotoModel,

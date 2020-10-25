@@ -14,6 +14,8 @@ final class DetailViewController: BaseViewController {
     @IBOutlet private weak var shareButton: UIButton!
     @IBOutlet private weak var detailCollectionView: UICollectionView!
     
+    var initialSelectedIndexPath: IndexPath?
+    var mainCollectionView: UICollectionView?
     var photoModels: [PhotoModel]? {
         didSet {
             self.reloadData()
@@ -21,14 +23,16 @@ final class DetailViewController: BaseViewController {
     }
     
     private lazy var delegateFactory: ListLayoutCollectionViewFactory = {
-       return ListLayoutCollectionViewFactory(self,
-                                              targetCV: detailCollectionView,
-                                              type: .Detail)
+        let factory = ListLayoutCollectionViewFactory(self,
+                                                      targetCV: detailCollectionView,
+                                                      type: .Detail)
+        return factory
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setButtonTitleByOS()
+        delegateFactory.selectedIndexPath = initialSelectedIndexPath
     }
     
     private func reloadData() {
@@ -40,6 +44,21 @@ final class DetailViewController: BaseViewController {
     // Actions
     
     @IBAction private func closeAction(_ sender: UIButton) {
+        if let visibleIndex = detailCollectionView.indexPathsForVisibleItems.first,
+           let photoModels = photoModels {
+            var scrollPosition: UICollectionView.ScrollPosition = .centeredVertically
+            switch visibleIndex.item {
+            case 0:
+                scrollPosition = .top
+            case photoModels.count-1:
+                scrollPosition = .bottom
+            default:
+                break
+            }
+            mainCollectionView?.scrollToItem(at: visibleIndex,
+                                            at: scrollPosition,
+                                            animated: false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
 }

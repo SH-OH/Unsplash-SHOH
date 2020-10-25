@@ -9,7 +9,7 @@ import UIKit.UICollectionViewLayout
 
 protocol ListLayoutDelegate: class {
     func collectionView(_ collectionView: UICollectionView,
-                        heightForItemAt indexPath:IndexPath) -> CGFloat
+                        photoHeightForItemAt indexPath:IndexPath) -> CGFloat
 }
 
 final class ListLayout: UICollectionViewFlowLayout {
@@ -21,12 +21,7 @@ final class ListLayout: UICollectionViewFlowLayout {
     private var cache = CacheTypeLayoutDictionary()
     
     private var contentHeight: CGFloat = 0
-    private var contentWidth: CGFloat {
-        guard let collectionView = collectionView else {
-            return 0
-        }
-        return collectionView.bounds.width
-    }
+    private var contentWidth: CGFloat = 0
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
@@ -43,26 +38,42 @@ final class ListLayout: UICollectionViewFlowLayout {
             return
         }
         
-        let columnWidth: CGFloat = contentWidth
-        /// more 시 바로 y에 + 하기 위해, yOffset start value를 현재 collectionView의 최대 높이로 설정.
+        /// more 시 바로 offset에 + 하기 위해, offset start value를 현재 collectionView의 size로 설정.
+        var xOffset: CGFloat = contentWidth
         var yOffset: CGFloat = contentHeight
+        
+        let photoWidth: CGFloat = collectionView.bounds.width
         
         // 2. 추가된 item만 layoutAttributes 만들기.
         for item in cache.count..<numberOfItems {
             let indexPath: IndexPath = IndexPath(item: item, section: 0)
             
-            // 2-1. 사진 resize height로 셀 frame 만들기.
-            let photoHeight: CGFloat = delegate.collectionView(collectionView, heightForItemAt: indexPath)
-            let frame = CGRect(x: 0, y: yOffset, width: columnWidth, height: photoHeight)
+            // 2-1. 사진 resize된 height로 셀 frame 만들기.
+            let photoHeight: CGFloat = delegate.collectionView(collectionView,
+                                                               photoHeightForItemAt: indexPath)
+            // 2-1-1. 상세 화면, 이미지 가운데 정렬.
+            if scrollDirection == .horizontal {
+                let centerYOffsetByMaxY: CGFloat = (collectionView.frame.maxY-photoHeight)/2
+                yOffset = centerYOffsetByMaxY - collectionView.frame.minY
+            }
+            
+            let frame: CGRect = CGRect(x: xOffset, y: yOffset,
+                                       width: photoWidth, height: photoHeight)
             
             // 2-2. IndexPath Key Type의 Dictionary Cache에 Attributes 만들어서 저장.
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
             cache.updateValue(attributes, forKey: indexPath)
             
-            // 2-3. 위에서 구한 cell frame의 maxY로 CollectionView total height(for contentsSize) 구하기.
-            contentHeight = frame.maxY
-            yOffset = yOffset + photoHeight
+            // 2-3. 위에서 구한 cell frame으로 CollectionView total Offset(for contentsSize) 구하기.
+            if scrollDirection == .vertical {
+                contentHeight = frame.maxY
+                yOffset = yOffset + photoHeight
+            } else {
+                contentWidth = frame.maxX
+                xOffset = xOffset + photoWidth
+                yOffset = 0
+            }
         }
     }
     
