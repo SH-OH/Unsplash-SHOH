@@ -5,18 +5,19 @@
 //  Created by Oh Sangho on 2020/10/24.
 //
 
-import Foundation
+import UIKit.UIViewController
 
 struct PhotoUseCase {
     
     private let provider: Provider
     
-    init(_ navigationController: BaseNavigationController) {
-        self.provider = Provider(navigationController)
+    init(_ parentController: UIViewController) {
+        self.provider = Provider(parentController)
     }
     
     func getPhotoList(oldModels: [PhotoModel],
                       completion: @escaping ([PhotoModel]) -> ()) {
+        Log.osh("oldModel : \(oldModels)")
         let perPage: Int = 30
         let page: Int = self.compareModelCountToPerPage(oldModels.count,
                                                         perPage)

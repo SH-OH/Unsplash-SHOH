@@ -12,7 +12,7 @@ protocol ListLayoutDelegate: class {
                         heightForItemAt indexPath:IndexPath) -> CGFloat
 }
 
-final class ListLayout: UICollectionViewLayout {
+final class ListLayout: UICollectionViewFlowLayout {
     
     typealias CacheTypeLayoutDictionary = [IndexPath: UICollectionViewLayoutAttributes]
     
@@ -51,7 +51,7 @@ final class ListLayout: UICollectionViewLayout {
         for item in cache.count..<numberOfItems {
             let indexPath: IndexPath = IndexPath(item: item, section: 0)
             
-            // 2-1. 사진 height 가져와서 셀 frame 만들기.
+            // 2-1. 사진 resize height로 셀 frame 만들기.
             let photoHeight: CGFloat = delegate.collectionView(collectionView, heightForItemAt: indexPath)
             let frame = CGRect(x: 0, y: yOffset, width: columnWidth, height: photoHeight)
             

@@ -17,10 +17,10 @@ final class Provider {
     
     var task: URLSessionDataTask?
     
-    private let navigationController: BaseNavigationController
+    private let parentController: UIViewController
     
-    init(_ navigationController: BaseNavigationController) {
-        self.navigationController = navigationController
+    init(_ parentController: UIViewController) {
+        self.parentController = parentController
     }
     
     private func prepareURLComponenets(_ urlString: String,
@@ -62,11 +62,11 @@ final class Provider {
             return completion(.failure(NetworkManager.RequestError.invalidURL))
         }
         let request: URLRequest = self.prepareURLRequest(url, method: method)
-        NetworkManager.shared.showNetworkActivity(self.navigationController,
+        NetworkManager.shared.showNetworkActivity(self.parentController,
                                                   show: true,
                                                   useLoading: useLoading)
         task = NetworkManager.shared.session.dataTask(with: request) { (data, response, error) in
-            NetworkManager.shared.showNetworkActivity(self.navigationController,
+            NetworkManager.shared.showNetworkActivity(self.parentController,
                                                       show: false,
                                                       useLoading: useLoading)
             Queue.request.queue.async {
