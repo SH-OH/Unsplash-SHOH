@@ -10,7 +10,7 @@ import UIKit
 final class ListCell: UICollectionViewCell {
     
     struct ForActivityData {
-        let index: Int
+        let isFirst: Bool
         let parentViewController: UIViewController?
     }
     
@@ -19,6 +19,11 @@ final class ListCell: UICollectionViewCell {
     
     private let imageDownloader: ImageDownloader = .init()
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        listImage.image = nil 
+    }
+    
     func configure(_ item: PhotoModel,
                    for activityData: ForActivityData) {
         listImageNameLb.text = makeName(item.user)
@@ -26,27 +31,18 @@ final class ListCell: UICollectionViewCell {
         downloadImage(item, for: activityData)
     }
     
-    private func downloadImage(_ item: PhotoModel, for activityData: ForActivityData) {
+    private func downloadImage(_ item: PhotoModel,
+                               for activityData: ForActivityData) {
         guard let url = item.urls[.regular] else { return }
         NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
                                                   show: true,
-                                                  useLoading: activityData.index < 2)
+                                                  useLoading: activityData.isFirst)
         imageDownloader.retriveImage(url) { [self] (image, cached) in
+            self.listImage.image = image
             if !cached {
-                UIView.transition(with: self.listImage,
-                                  duration: 0.3,
-                                  options: .transitionCrossDissolve) {
-                    self.listImage.image = image
-                } completion: { (_) in
-                    NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
-                                                              show: false,
-                                                              useLoading: activityData.index < 2)
-                }
-            } else {
-                self.listImage.image = image
                 NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
                                                           show: false,
-                                                          useLoading: activityData.index < 2)
+                                                          useLoading: activityData.isFirst)
             }
         }
     }

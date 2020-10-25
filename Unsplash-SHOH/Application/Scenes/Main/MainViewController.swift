@@ -14,6 +14,8 @@ class MainViewController: BaseViewController {
             self.reloadData()
         }
     }
+    /// 화면 첫 진입으로 셀 이미지 로딩 보여주기 위한 Flag
+    private var isFirstDownloadForLoading: Bool = true
     
     @IBOutlet private weak var listCollectionView: UICollectionView!
     
@@ -57,9 +59,13 @@ extension MainViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(ListCell.self, for: indexPath)
         if let item = self.photoModels[safe: indexPath.item] {
-            let data = ListCell.ForActivityData(index: indexPath.item,
+            let isFirst: Bool = indexPath.item == 0 && isFirstDownloadForLoading
+            let data = ListCell.ForActivityData(isFirst: isFirst,
                                                 parentViewController: navigationController)
             cell.configure(item, for: data)
+            if isFirstDownloadForLoading {
+                isFirstDownloadForLoading = false
+            }
         }
         return cell
     }
@@ -86,8 +92,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        Log.osh(indexPath)
-        let isLastIndex: Bool = indexPath.item == photoModels.count-15
-        if isLastIndex {
+        let prefetchIndex: Bool = indexPath.item == photoModels.count-15
+        if prefetchIndex {
             self.requestGetPhotoList()
         }
     }
