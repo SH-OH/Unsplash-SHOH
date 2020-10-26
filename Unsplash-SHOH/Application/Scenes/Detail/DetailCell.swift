@@ -16,6 +16,7 @@ final class DetailCell: UICollectionViewCell {
     func configure(_ item: PhotoModel) {
         imageDownloadUseCase.downloadImage(item,
                                            target: detailImage,
+                                           size: frame.size,
                                            index: 0)
     }
 }

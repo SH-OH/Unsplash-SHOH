@@ -26,7 +26,6 @@ final class MainCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         listImage.image = nil
-        Log.osh("index : \(index), image size : \(listImage.image?.size)")
     }
     
     func configure(_ item: PhotoModel,
@@ -38,6 +37,7 @@ final class MainCell: UICollectionViewCell {
         listImage.backgroundColor = item.color
         imageDownloadUseCase.downloadImage(item,
                                            target: listImage,
+                                           size: frame.size,
                                            for: activityData,
                                            index: index)
     }

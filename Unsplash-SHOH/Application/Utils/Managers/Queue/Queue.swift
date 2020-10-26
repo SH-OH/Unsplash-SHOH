@@ -10,7 +10,7 @@ import Foundation
 enum Queue {
     case root
     case request
-    case image(_ urlString: String)
+    case image
     case cache
     
     var queue: DispatchQueue {
@@ -21,8 +21,8 @@ enum Queue {
             return DispatchQueue(label: "queue.NetworkManager.request")
             
             // operationQueue로 바꿔서 해보자!
-        case .image(let urlString):
-            return DispatchQueue(label: "queue.NetworkManager.image.\(urlString)",
+        case .image:
+            return DispatchQueue(label: "queue.NetworkManager.image.download",
                                  attributes: .concurrent)
         case .cache:
             return DispatchQueue(label: "queue.ImageCahe.process")

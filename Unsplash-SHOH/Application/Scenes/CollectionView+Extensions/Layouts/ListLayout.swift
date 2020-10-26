@@ -168,7 +168,7 @@ final class ListLayout: UICollectionViewFlowLayout {
         
         let opQueue: OperationQueue = .init()
         opQueue.name = "layout"
-        opQueue.qualityOfService = .userInitiated
+        opQueue.qualityOfService = .userInteractive
         opQueue.maxConcurrentOperationCount = 4
         
         
