@@ -44,6 +44,7 @@
 		CB99FE942542A14C004C15EB /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE932542A14C004C15EB /* Log.swift */; };
 		CB99FE9A2542A617004C15EB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FE992542A617004C15EB /* Constants.swift */; };
 		CB99FEA22542C212004C15EB /* Codable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99FEA12542C212004C15EB /* Codable+Extensions.swift */; };
+		CBC407872546753A0073E662 /* UIIMage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC407862546753A0073E662 /* UIIMage+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		CB99FE932542A14C004C15EB /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		CB99FE992542A617004C15EB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB99FEA12542C212004C15EB /* Codable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Extensions.swift"; sourceTree = "<group>"; };
+		CBC407862546753A0073E662 /* UIIMage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIIMage+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,11 +354,12 @@
 		CB99FE5A25426B6D004C15EB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CB733A522543709800C09F9A /* Array+Extensions.swift */,
 				CB7339CA254343EE00C09F9A /* Cell+Extensions.swift */,
 				CB99FEA12542C212004C15EB /* Codable+Extensions.swift */,
 				CB99FE5B25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift */,
 				CB99FE66254270A3004C15EB /* UIColor+Extensions.swift */,
-				CB733A522543709800C09F9A /* Array+Extensions.swift */,
+				CBC407862546753A0073E662 /* UIIMage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				CB1176A52544398100B310AB /* ListLayout.swift in Sources */,
 				CB99FE5C25426B80004C15EB /* KeyedDecodingContainer+Extensions.swift in Sources */,
 				CB241A2B25454E4C0060668D /* ListLayoutCollectionViewFactory.swift in Sources */,
+				CBC407872546753A0073E662 /* UIIMage+Extensions.swift in Sources */,
 				CB7339CB254343EE00C09F9A /* Cell+Extensions.swift in Sources */,
 				CB99FE9A2542A617004C15EB /* Constants.swift in Sources */,
 				CB7339E72543458800C09F9A /* LoadingViewController.swift in Sources */,

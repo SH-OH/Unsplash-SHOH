@@ -16,26 +16,57 @@ struct ImageDownloadUseCase {
     
     private let imageDownloader: ImageDownloader = .init()
     
+    private var imageCache: ImageCache = ImageCache.shared
+    
     func downloadImage(_ item: PhotoModel,
                        target: UIImageView,
                        for activityData: ForActivityData? = nil) {
         guard let url = item.urls[.regular] else { return }
-        self.controlActivity(show: true,
-                             activityData: activityData)
-        imageDownloader.retriveImage(url) { [self] (image, cached) in
-            if !cached {
+//        if let cachedImage = imageCache.getImage(url.absoluteString) {
+//            target.image = cachedImage
+//            return
+//        }
+        
+        imageCache.getImage(url.absoluteString) { (image) in
+            if let cachedImage = image {
+                DispatchQueue.main.async {
+                    target.image = cachedImage
+                }
+                return
+            }
+            
+            self.controlActivity(show: true,
+                                 activityData: activityData)
+            imageDownloader.retriveImage(url) { [self] (image) in
                 UIView.transition(with: target,
                                   duration: 0.3,
                                   options: .transitionCrossDissolve) {
-                    target.image = image
+                    let resizedImage = image.resizedImage(size: target.bounds.size)
+                    self.imageCache.setImage(url.absoluteString, image: resizedImage)
+                    Log.osh("origin image : \(image), resized image : \(resizedImage)")
+                    target.image = resizedImage
                 } completion: { (_) in
                     self.controlActivity(show: false,
                                          activityData: activityData)
                 }
-            } else {
-                target.image = image
             }
         }
+        
+//        self.controlActivity(show: true,
+//                             activityData: activityData)
+//        imageDownloader.retriveImage(url) { [self] (image) in
+//            UIView.transition(with: target,
+//                              duration: 0.3,
+//                              options: .transitionCrossDissolve) {
+//                let resizedImage = image.resizedImage(size: target.bounds.size)
+//                self.imageCache.setImage(url.absoluteString, image: resizedImage)
+//                Log.osh("origin image : \(image), resized image : \(resizedImage)")
+//                target.image = resizedImage
+//            } completion: { (_) in
+//                self.controlActivity(show: false,
+//                                     activityData: activityData)
+//            }
+//        }
     }
     
     private func controlActivity(show: Bool,

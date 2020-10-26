@@ -12,8 +12,6 @@ final class ImageDownloader {
     
     var task: URLSessionDataTask?
     
-    private var imageCache: ImageCache = ImageCache.shared
-    
     private func prepareURLRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url,
                                  timeoutInterval: NetworkManager.shared.timeout)
@@ -23,14 +21,8 @@ final class ImageDownloader {
     }
     
     func retriveImage(_ url: URL,
-                      completion: @escaping (UIImage?, Bool) -> ()) {
+                      completion: @escaping (UIImage) -> ()) {
         guard task == nil else {
-            return
-        }
-        if let cachedImage = self.imageCache.getImage(url.absoluteString) {
-            DispatchQueue.main.async {
-                completion(cachedImage, true)
-            }
             return
         }
         let request: URLRequest = self.prepareURLRequest(url)
@@ -40,14 +32,10 @@ final class ImageDownloader {
                 guard error == nil,
                       let data = data,
                       let image = UIImage(data: data) else {
-                    DispatchQueue.main.async {
-                        completion(nil, false)
-                    }
                     return
                 }
-                self.imageCache.setImage(url.absoluteString, image: image)
                 DispatchQueue.main.async {
-                    completion(image, false)
+                    completion(image)
                 }
             }
         }

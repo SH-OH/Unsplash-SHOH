@@ -30,10 +30,23 @@ struct ImageCache {
         return cache.object(forKey: key as NSString)
     }
     
+    func getImage(_ key: String, completion: @escaping (UIImage?) -> ()) {
+        Queue.cache.queue.async {
+            lock.lock()
+            defer { lock.unlock() }
+            let cachedImage = cache.object(forKey: key as NSString)
+            Log.osh("get cached key : \(key)\n get cached image : \(cachedImage)")
+            completion(cachedImage)
+        }
+    }
+    
     func setImage(_ key: String, image: UIImage) {
-        lock.lock()
-        defer { lock.unlock() }
-        cache.setObject(image, forKey: key as NSString)
+        Queue.cache.queue.async {
+            lock.lock()
+            defer { lock.unlock() }
+            cache.setObject(image, forKey: key as NSString)
+            Log.osh("set cache key : \(key)\n set cache image : \(image)")
+        }
     }
     
 }
