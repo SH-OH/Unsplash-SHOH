@@ -55,31 +55,33 @@ final class Provider {
             return completion(.failure(NetworkManager.RequestError.invalidURL))
         }
         let request: URLRequest = self.prepareURLRequest(url, method: method)
-        task = NetworkManager.shared.session.dataTask(with: request) { (data, response, error) in
-            Queue.request.queue.async {
-                #if DEBUG
-                let response: String = String(data: data ?? .init(), encoding: .utf8) ?? "NO DATA"
-                let makeDict: [String: Any] = [
-                    "01.URL": "[\(method)] \(url)",
-                    "02.parameters": parameters ?? "NO PARAMETERS",
-                    "03.Response": response.isEmpty ? "NO DATA" : response
-                ]
-                //                Log.d(makeDict)
-                #endif
-                if let error = error {
-                    Log.e(error)
-                    return completion(.failure(error))
-                }
-                if let data = data,
-                   let makeJson: T = try? T.decode(data: data) {
-                    //                    Log.osh("success json : \(makeJson)")
-                    return completion(.success(makeJson))
-                } else {
-                    return completion(.failure(NetworkManager.RequestError.failedParsing))
+        Queue.root.queue.async {
+            self.task = NetworkManager.shared.session.dataTask(with: request) { (data, response, error) in
+                Queue.request.queue.async {
+                    #if DEBUG
+                    let response: String = String(data: data ?? .init(), encoding: .utf8) ?? "NO DATA"
+                    let makeDict: [String: Any] = [
+                        "01.URL": "[\(method)] \(url)",
+                        "02.parameters": parameters ?? "NO PARAMETERS",
+                        "03.Response": response.isEmpty ? "NO DATA" : response
+                    ]
+                    //                Log.d(makeDict)
+                    #endif
+                    if let error = error {
+                        Log.e(error)
+                        return completion(.failure(error))
+                    }
+                    if let data = data,
+                       let makeJson: T = try? T.decode(data: data) {
+                        //                    Log.osh("success json : \(makeJson)")
+                        return completion(.success(makeJson))
+                    } else {
+                        return completion(.failure(NetworkManager.RequestError.failedParsing))
+                    }
                 }
             }
+            self.task?.resume()
         }
-        task?.resume()
     }
     
     func cancel() {

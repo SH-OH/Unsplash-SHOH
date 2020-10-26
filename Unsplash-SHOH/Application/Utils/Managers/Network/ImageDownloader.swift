@@ -26,20 +26,22 @@ final class ImageDownloader {
             return
         }
         let request: URLRequest = self.prepareURLRequest(url)
-        task = NetworkManager.shared.session.dataTask(with: request) { [self] (data, _, error) in
-            self.task = nil
-            Queue.image(url.absoluteString).queue.async {
-                guard error == nil,
-                      let data = data,
-                      let image = UIImage(data: data) else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    completion(image)
+        Queue.root.queue.async {
+            self.task = NetworkManager.shared.session.dataTask(with: request) { [self] (data, _, error) in
+                self.task = nil
+                Queue.image(url.absoluteString).queue.async {
+                    guard error == nil,
+                          let data = data,
+                          let image = UIImage(data: data) else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        completion(image)
+                    }
                 }
             }
+            self.task?.resume()
         }
-        task?.resume()
     }
     
     func cancel() {

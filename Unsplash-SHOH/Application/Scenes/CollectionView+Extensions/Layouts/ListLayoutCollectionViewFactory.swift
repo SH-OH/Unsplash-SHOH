@@ -80,7 +80,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                 let isFirst: Bool = indexPath.item == 0 && self.isFirstLoadFlag
                 let data = ImageDownloadUseCase.ForActivityData(isFirst: isFirst,
                                                                 parentViewController: self.parentController)
-                cell.configure(item, for: data)
+                cell.configure(item, for: data, index: indexPath.item)
                 if self.isFirstLoadFlag {
                     self.isFirstLoadFlag = false
                 }

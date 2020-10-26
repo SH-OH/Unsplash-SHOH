@@ -20,18 +20,26 @@ final class MainCell: UICollectionViewCell {
     private let imageDownloader: ImageDownloader = .init()
     private let imageDownloadUseCase: ImageDownloadUseCase = .init()
     
+    
+    private var index: Int?
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         listImage.image = nil
+        Log.osh("index : \(index), image size : \(listImage.image?.size)")
     }
     
     func configure(_ item: PhotoModel,
-                   for activityData: ImageDownloadUseCase.ForActivityData) {
+                   for activityData: ImageDownloadUseCase.ForActivityData,
+                   index: Int) {
+        self.index = index
+        Log.osh("index : \(index), image size : \(listImage.image?.size)")
         listImageNameLb.text = makeName(item.user)
         listImage.backgroundColor = item.color
         imageDownloadUseCase.downloadImage(item,
                                            target: listImage,
-                                           for: activityData)
+                                           for: activityData,
+                                           index: index)
     }
     
     private func makeName(_ user: PhotoUser?) -> String {

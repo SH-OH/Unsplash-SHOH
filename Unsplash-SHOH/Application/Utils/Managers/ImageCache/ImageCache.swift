@@ -11,7 +11,7 @@ import UIKit.UIImage
 struct ImageCache {
     
     enum Config {
-        static let countLimit: Int = 500
+        static let countLimit: Int = 300
     }
     
     static let shared = ImageCache()
@@ -25,27 +25,21 @@ struct ImageCache {
     }()
     
     func getImage(_ key: String) -> UIImage? {
-        lock.lock()
-        defer { lock.unlock() }
         return cache.object(forKey: key as NSString)
     }
     
     func getImage(_ key: String, completion: @escaping (UIImage?) -> ()) {
         Queue.cache.queue.async {
-            lock.lock()
-            defer { lock.unlock() }
             let cachedImage = cache.object(forKey: key as NSString)
-            Log.osh("get cached key : \(key)\n get cached image : \(cachedImage)")
+//            Log.osh("get cached key : \(key)\n get cached image : \(cachedImage)")
             completion(cachedImage)
         }
     }
     
     func setImage(_ key: String, image: UIImage) {
         Queue.cache.queue.async {
-            lock.lock()
-            defer { lock.unlock() }
             cache.setObject(image, forKey: key as NSString)
-            Log.osh("set cache key : \(key)\n set cache image : \(image)")
+//            Log.osh("set cache key : \(key)\n set cache image : \(image)")
         }
     }
     
