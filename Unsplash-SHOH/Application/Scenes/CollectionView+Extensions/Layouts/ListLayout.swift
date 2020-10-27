@@ -65,7 +65,7 @@ final class ListLayout: UICollectionViewFlowLayout {
             let kind: String = UICollectionView.elementKindSectionHeader
             let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: kind,
                                                                     with: IndexPath(item: 0, section: 0))
-            headerAttributes.zIndex = 1
+            headerAttributes.zIndex = 10
             headerAttributes.frame = CGRect(origin: .zero, size: headerSize)
             cache.updateValue(headerAttributes, forKey: .header)
             yOffset = photoWidth
@@ -112,13 +112,14 @@ final class ListLayout: UICollectionViewFlowLayout {
         self.visibleLayoutAttributes.removeAll(keepingCapacity: true)
         
         // 0. 헤더 속성 추가
-        if let headerAttr = cache[.header],
+        if cache[.header] != nil,
            let layoutAttributes = super.layoutAttributesForElements(in: rect),
            let offset = collectionView?.contentOffset {
             self.visibleLayoutAttributes = layoutAttributes
             if offset.y < 0 {
                 for attributes in self.visibleLayoutAttributes {
-                    if let kind = attributes.representedElementKind, kind == UICollectionView.elementKindSectionHeader {
+                    if let kind = attributes.representedElementKind,
+                       kind == UICollectionView.elementKindSectionHeader {
                         let diffValue = abs(offset.y)
                         var frame = attributes.frame
                         frame.size.height = max(0, headerReferenceSize.height + diffValue)
@@ -126,9 +127,6 @@ final class ListLayout: UICollectionViewFlowLayout {
                         attributes.frame = frame
                     }
                 }
-            }
-            if rect.intersects(headerAttr.frame) {
-                self.visibleLayoutAttributes.append(headerAttr)
             }
         }
         

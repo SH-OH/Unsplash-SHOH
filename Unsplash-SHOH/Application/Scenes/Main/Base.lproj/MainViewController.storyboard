@@ -17,8 +17,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search photos" translatesAutoresizingMaskIntoConstraints="NO" id="JnP-QL-pdu">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kHd-dh-rnH">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="100" width="414" height="796"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="naF-gi-KP1" customClass="ListLayout" customModule="Unsplash_SHOH" customModuleProvider="target">
                                     <size key="itemSize" width="128" height="128"/>
@@ -73,25 +77,12 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
-                                                <searchBar contentMode="redraw" barStyle="black" placeholder="Search photos" backgroundImage="nil" translatesAutoresizingMaskIntoConstraints="NO" id="f6N-5t-N8M" customClass="IBSearchBar" customModule="Unsplash_SHOH" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="179" width="414" height="56"/>
-                                                    <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <textInputTraits key="textInputTraits" returnKeyType="search"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </searchBar>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="f6N-5t-N8M" firstAttribute="centerY" secondItem="ohI-3C-OL0" secondAttribute="centerY" id="Elz-B0-cPj"/>
                                                 <constraint firstAttribute="trailing" secondItem="ohI-3C-OL0" secondAttribute="trailing" id="I7Z-vg-6Z2"/>
                                                 <constraint firstItem="ohI-3C-OL0" firstAttribute="leading" secondItem="ySm-sq-5Ja" secondAttribute="leading" id="Iwi-fo-XBi"/>
-                                                <constraint firstItem="f6N-5t-N8M" firstAttribute="leading" secondItem="ySm-sq-5Ja" secondAttribute="leading" id="blX-wL-uPb"/>
                                                 <constraint firstItem="ohI-3C-OL0" firstAttribute="top" secondItem="ySm-sq-5Ja" secondAttribute="top" id="g0o-rd-R3s"/>
-                                                <constraint firstAttribute="trailing" secondItem="f6N-5t-N8M" secondAttribute="trailing" id="ge5-zd-wiD"/>
                                                 <constraint firstAttribute="bottom" secondItem="ohI-3C-OL0" secondAttribute="bottom" id="mdO-13-SXf"/>
                                             </constraints>
                                         </view>
@@ -104,7 +95,6 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="headerImage" destination="ohI-3C-OL0" id="jui-5f-Xsp"/>
-                                        <outlet property="searchBar" destination="f6N-5t-N8M" id="ePi-c0-KPb"/>
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
@@ -112,9 +102,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="JnP-QL-pdu" secondAttribute="bottom" id="3vH-q0-eyG"/>
                             <constraint firstAttribute="trailing" secondItem="kHd-dh-rnH" secondAttribute="trailing" id="7aq-9u-DuV"/>
-                            <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8Io-bu-Skt"/>
+                            <constraint firstItem="JnP-QL-pdu" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="9dQ-Da-zll"/>
+                            <constraint firstItem="JnP-QL-pdu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="BRf-3Z-orU"/>
                             <constraint firstItem="kHd-dh-rnH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mnp-ZG-Pgl"/>
+                            <constraint firstItem="JnP-QL-pdu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="N9D-aJ-nMM"/>
                             <constraint firstAttribute="bottom" secondItem="kHd-dh-rnH" secondAttribute="bottom" id="hpA-RT-cUU"/>
                         </constraints>
                     </view>
@@ -127,12 +120,4 @@
             <point key="canvasLocation" x="140.57971014492756" y="87.723214285714278"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="f6N-5t-N8M">
-            <size key="intrinsicContentSize" width="-1" height="56"/>
-        </designable>
-    </designables>
-    <resources>
-        <image name="nil" width="128" height="128"/>
-    </resources>
 </document>
