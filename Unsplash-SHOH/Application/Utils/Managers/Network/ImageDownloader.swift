@@ -12,7 +12,7 @@ final class ImageDownloader {
     
     var task: URLSessionDataTask?
     
-    private let imageCache: ImageCache = ImageCache.shared
+    private var imageCache: ImageCache = ImageCache.shared
     
     private func prepareURLRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url,
@@ -30,20 +30,21 @@ final class ImageDownloader {
         }
         let request: URLRequest = self.prepareURLRequest(url)
         Queue.root.queue.async {
-            self.task = NetworkManager.shared.session.dataTask(with: request) { [self] (data, _, error) in
+            self.task = URLSession(configuration: .default).dataTask(with: request) { [self] (data, _, error) in
                 self.task = nil
-                Queue.image.queue.async {
+                Queue.imageDownload.queue.async {
                     guard error == nil,
                           let data = data,
                           let image = UIImage(data: data) else {
                         return
                     }
-                    let resizedImage = image.resizedImage(size: size)
-                    imageCache.setImage(url.absoluteString,
-                                        image: resizedImage)
-                    DispatchQueue.main.async {
-                        completion(image)
-                    }
+                    completion(image)
+                    //                    let resizedImage = image.resizedImage(size: size)
+                    //                    imageCache.setImage(url.absoluteString,
+                    //                                        image: resizedImage)
+                    //                    DispatchQueue.main.async {
+                    //                        completion(image)
+                    //                    }
                 }
             }
             self.task?.resume()
@@ -56,79 +57,68 @@ final class ImageDownloader {
     
 }
 
-extension ImageDownloader {
+final class ImageDownloadManager {
     
-    func downloadToCachingImage(_ url: URL, completion: ((UIImage?, Bool) -> ())? = nil) {
-        guard task == nil else {
+    static let shared = ImageDownloadManager()
+    
+    private var imageDownloadTasks: [String: URLSessionDataTask]
+    private var imageCache: ImageCache
+    private init() {
+        imageDownloadTasks = [:]
+        imageCache = .shared
+    }
+    
+    
+    private func prepareURLRequest(_ url: URL) -> URLRequest {
+        var request = URLRequest(url: url,
+                                 timeoutInterval: NetworkManager.shared.timeout)
+        request.httpMethod = NetworkManager.HTTPMethod.get.rawValue
+        request.allHTTPHeaderFields = APIDomain.header
+        return request
+    }
+    
+    
+    func downloadImage(_ url: URL,
+                       size: CGSize,
+                       completion: @escaping (UIImage?) -> ()) {
+        
+        let urlString: String = url.absoluteString
+        if let cachedImage = imageCache.getImage(urlString) {
+            DispatchQueue.main.async {
+                completion(cachedImage)
+            }
             return
         }
         
-        imageCache.getImage(url.absoluteString) { (image) in
-            if let cachedImage = image {
-                DispatchQueue.main.async {
-                    completion?(cachedImage, false)
-                }
-                return
-            }
-            let request: URLRequest = self.prepareURLRequest(url)
-            Queue.root.queue.async {
-                self.task = NetworkManager.shared.session.dataTask(with: request) { [self] (data, _, error) in
-                    self.task = nil
-                    Queue.image.queue.async {
-                        guard error == nil,
-                              let data = data,
-                              let image = UIImage(data: data) else {
-                            return
-                        }
-                        imageCache.setImage(url.absoluteString, image: image)
-                        DispatchQueue.main.async {
-                            completion?(image, true)
-                        }
+        guard imageDownloadTasks[urlString] == nil else { return }
+        
+        let request: URLRequest = self.prepareURLRequest(url)
+        Queue.root.queue.async {
+            let task = NetworkManager.shared.session.dataTask(with: request) { (data, _, error) in
+                guard error == nil,
+                      let data = data,
+                      let image = UIImage(data: data) else {
+                    DispatchQueue.main.async {
+                        completion(nil)
                     }
+                    return
                 }
-                self.task?.resume()
-            }
-        }
-    }
-    
-    
-    func downloadImage(_ item: PhotoModel,
-                       target: UIImageView,
-                       for activityData: ImageDownloadUseCase.ForActivityData? = nil,
-                       index: Int) {
-        guard let url = item.urls[.regular] else { return }
-        imageCache.getImage(url.absoluteString) { (image) in
-            if let cachedImage = image {
+                let resizedImage = image.resizedImage(size: size)
+                Queue.cache.queue.async(flags: .barrier) {
+                    self.imageCache.setImage(urlString, image: resizedImage)
+                }
+                Queue.imageDownload.queue.sync {
+                    _ = self.imageDownloadTasks.removeValue(forKey: urlString)
+                }
+                
                 DispatchQueue.main.async {
-                    target.image = cachedImage
-                    Log.osh("index : \(index), cached image set size : \(target.image?.size)")
-                }
-                return
-            }
-            
-            self.controlActivity(show: true,
-                                 activityData: activityData)
-            self.retriveImage(url, size: target.frame.size) { [self] (image) in
-                DispatchQueue.main.async {
-                    UIView.transition(with: target,
-                                      duration: 0.3,
-                                      options: .transitionCrossDissolve) {
-                        target.image = image
-                        Log.osh("index : \(index), not cached image set size : \(target.image?.size)")
-                    } completion: { (_) in
-                        self.controlActivity(show: false,
-                                             activityData: activityData)
-                    }
+                    completion(resizedImage)
                 }
             }
+            Queue.imageDownload.queue.async(flags: .barrier, execute: {
+                _ = self.imageDownloadTasks.updateValue(task, forKey: urlString)
+            })
+            task.resume()
         }
-    }
-    
-    private func controlActivity(show: Bool,
-                                 activityData: ImageDownloadUseCase.ForActivityData?) {
-        guard let activityData = activityData else { return }
-        NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
-                                                  show: show,
-                                                  useLoading: activityData.isFirst)
     }
 }

@@ -45,5 +45,5 @@ struct PhotoModel: Decodable {
         likes = try container.decode(Int.self, forKey: .likes)
         downloads = try? container.decode(Int.self, forKey: .downloads)
         views = try? container.decode(Int.self, forKey: .views)
-    }   
+    }
 }

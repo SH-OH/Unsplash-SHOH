@@ -17,11 +17,7 @@ final class MainCell: UICollectionViewCell {
     @IBOutlet private weak var listImage: UIImageView!
     @IBOutlet private weak var listImageNameLb: UILabel!
     
-    private let imageDownloader: ImageDownloader = .init()
-    private let imageDownloadUseCase: ImageDownloadUseCase = .init()
-    
-    
-    private var index: Int?
+//    private let imageDownloadUseCase: ImageDownloadUseCase = .init()
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -29,17 +25,21 @@ final class MainCell: UICollectionViewCell {
     }
     
     func configure(_ item: PhotoModel,
-                   for activityData: ImageDownloadUseCase.ForActivityData,
-                   index: Int) {
-        self.index = index
-//        Log.osh("index : \(index), image size : \(listImage.image?.size)")
+                   for activityData: ImageDownloadUseCase.ForActivityData) {
         listImageNameLb.text = makeName(item.user)
         listImage.backgroundColor = item.color
-        imageDownloadUseCase.downloadImage(item,
-                                           target: listImage,
-                                           size: frame.size,
-                                           for: activityData,
-                                           index: index)
+        
+        
+//        imageDownloadUseCase.downloadImage(item,
+//                                           target: listImage,
+//                                           size: frame.size,
+//                                           for: activityData)
+        guard let url = item.urls[.regular] else { return }
+        ImageDownloadManager.shared.downloadImage(url,
+                                                  size: frame.size) { [self] (image) in
+            self.listImage.image = image
+        }
+        
     }
     
     private func makeName(_ user: PhotoUser?) -> String {

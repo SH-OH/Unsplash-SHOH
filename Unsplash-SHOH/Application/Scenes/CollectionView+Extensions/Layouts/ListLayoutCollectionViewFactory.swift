@@ -81,7 +81,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                 let isFirst: Bool = indexPath.item == 0 && self.isFirstLoadFlag
                 let data = ImageDownloadUseCase.ForActivityData(isFirst: isFirst,
                                                                 parentViewController: self.parentController)
-                cell.configure(item, for: data, index: indexPath.item)
+                cell.configure(item, for: data)
                 if self.isFirstLoadFlag {
                     self.isFirstLoadFlag = false
                 }
@@ -155,7 +155,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
         guard let photoModels = delegate?.photoModels else { return }
         switch dataSourceType {
         case .Main:
-            Log.osh("indexPath : \(indexPath)")
+//            Log.osh("indexPath : \(indexPath)")
             let prefetchIndex: Bool = indexPath.item == photoModels.count-15
             if prefetchIndex {
                 self.requestGetPhotoList()
@@ -192,6 +192,6 @@ extension ListLayoutCollectionViewFactory: ListLayoutDelegate {
 extension ListLayoutCollectionViewFactory: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView,
                         prefetchItemsAt indexPaths: [IndexPath]) {
-        Log.osh("indexPath : \(indexPaths)")
+//        Log.osh("indexPath : \(indexPaths)")
     }
 }
