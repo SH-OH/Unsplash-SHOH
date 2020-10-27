@@ -30,6 +30,15 @@ final class MainViewController: BaseViewController {
         delegateFactory.requestGetPhotoList()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if #available(iOS 13.0, *) {
+//            searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search photos", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
     private func reloadData() {
         DispatchQueue.main.async {
             self.listCollectionView.reloadData()

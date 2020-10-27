@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -72,14 +71,27 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ohI-3C-OL0">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
-                                                    <color key="backgroundColor" systemColor="systemPinkColor"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
+                                                <searchBar contentMode="redraw" barStyle="black" placeholder="Search photos" backgroundImage="nil" translatesAutoresizingMaskIntoConstraints="NO" id="f6N-5t-N8M" customClass="IBSearchBar" customModule="Unsplash_SHOH" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="179" width="414" height="56"/>
+                                                    <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </searchBar>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstItem="f6N-5t-N8M" firstAttribute="centerY" secondItem="ohI-3C-OL0" secondAttribute="centerY" id="Elz-B0-cPj"/>
                                                 <constraint firstAttribute="trailing" secondItem="ohI-3C-OL0" secondAttribute="trailing" id="I7Z-vg-6Z2"/>
                                                 <constraint firstItem="ohI-3C-OL0" firstAttribute="leading" secondItem="ySm-sq-5Ja" secondAttribute="leading" id="Iwi-fo-XBi"/>
+                                                <constraint firstItem="f6N-5t-N8M" firstAttribute="leading" secondItem="ySm-sq-5Ja" secondAttribute="leading" id="blX-wL-uPb"/>
                                                 <constraint firstItem="ohI-3C-OL0" firstAttribute="top" secondItem="ySm-sq-5Ja" secondAttribute="top" id="g0o-rd-R3s"/>
+                                                <constraint firstAttribute="trailing" secondItem="f6N-5t-N8M" secondAttribute="trailing" id="ge5-zd-wiD"/>
                                                 <constraint firstAttribute="bottom" secondItem="ohI-3C-OL0" secondAttribute="bottom" id="mdO-13-SXf"/>
                                             </constraints>
                                         </view>
@@ -92,17 +104,18 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="headerImage" destination="ohI-3C-OL0" id="jui-5f-Xsp"/>
+                                        <outlet property="searchBar" destination="f6N-5t-N8M" id="ePi-c0-KPb"/>
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="kHd-dh-rnH" secondAttribute="trailing" id="7aq-9u-DuV"/>
+                            <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8Io-bu-Skt"/>
                             <constraint firstItem="kHd-dh-rnH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mnp-ZG-Pgl"/>
                             <constraint firstAttribute="bottom" secondItem="kHd-dh-rnH" secondAttribute="bottom" id="hpA-RT-cUU"/>
-                            <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="zPq-0O-HYk"/>
                         </constraints>
                     </view>
                     <connections>
@@ -114,12 +127,12 @@
             <point key="canvasLocation" x="140.57971014492756" y="87.723214285714278"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="f6N-5t-N8M">
+            <size key="intrinsicContentSize" width="-1" height="56"/>
+        </designable>
+    </designables>
     <resources>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="nil" width="128" height="128"/>
     </resources>
 </document>
