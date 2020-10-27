@@ -19,10 +19,11 @@ struct ImageDownloadUseCase {
     func downloadImage(_ item: PhotoModel,
                        target: UIImageView,
                        size: CGSize,
+                       isHeader: Bool = false,
                        for activityData: ForActivityData? = nil) {
-        guard let regularUrl = item.urls[.regular] else { return }
-        let url = self.resizedURL(regularUrl, size: target.bounds.size)
-        if let cachedImage = ImageCache.shared.getImage(url.absoluteString) {
+        guard let url = item.urls[.regular] else { return }
+        let key = isHeader ? "header" : url.absoluteString
+        if let cachedImage = ImageCache.shared.getImage(key) {
             DispatchQueue.main.async {
                 target.image = cachedImage
             }
@@ -31,7 +32,9 @@ struct ImageDownloadUseCase {
         
         self.controlActivity(show: true,
                              activityData: activityData)
-        imageDownloader.retriveImage(url, size: size) { [self] (image) in
+        imageDownloader.retriveImage(url,
+                                     size: size,
+                                     isHeader: isHeader) { [self] (image) in
             DispatchQueue.main.async {
                 UIView.transition(with: target,
                                   duration: 0.3,
@@ -43,18 +46,6 @@ struct ImageDownloadUseCase {
                 }
             }
         }
-    }
-    
-    private func resizedURL(_ url: URL, size: CGSize) -> URL {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            return url
-        }
-        if let queryItems = urlComponents.queryItems {
-            for var item in queryItems where item.name == "w" {
-                item.value = "\(size)"
-            }
-        }
-        return urlComponents.url ?? url
     }
     
     private func controlActivity(show: Bool,

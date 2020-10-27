@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CB063B4F254311A500EF9112 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB063B4E254311A500EF9112 /* Provider.swift */; };
 		CB063B542543143D00EF9112 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB063B532543143D00EF9112 /* ImageDownloader.swift */; };
+		CB0E8893254866550098D841 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0E8892254866550098D841 /* MainHeaderView.swift */; };
 		CB1176A52544398100B310AB /* ListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1176A42544398100B310AB /* ListLayout.swift */; };
 		CB1176AD254490C300B310AB /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1176AC254490C300B310AB /* Queue.swift */; };
 		CB241A1F25453CDF0060668D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB241A1E25453CDF0060668D /* DetailViewController.swift */; };
@@ -67,6 +68,7 @@
 /* Begin PBXFileReference section */
 		CB063B4E254311A500EF9112 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		CB063B532543143D00EF9112 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		CB0E8892254866550098D841 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
 		CB1176A42544398100B310AB /* ListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListLayout.swift; sourceTree = "<group>"; };
 		CB1176AC254490C300B310AB /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		CB241A1E25453CDF0060668D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -253,8 +255,9 @@
 		CB685578254148C400132C1A /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				CB68553825411B4B00132C1A /* MainViewController.swift */,
 				CB733A3B254354FF00C09F9A /* MainCell.swift */,
+				CB0E8892254866550098D841 /* MainHeaderView.swift */,
+				CB68553825411B4B00132C1A /* MainViewController.swift */,
 				CB68553A25411B4B00132C1A /* MainViewController.storyboard */,
 			);
 			path = Main;
@@ -569,6 +572,7 @@
 				CB99FEA22542C212004C15EB /* Codable+Extensions.swift in Sources */,
 				CB6855A22541858400132C1A /* PhotoExif.swift in Sources */,
 				CB733A3C254354FF00C09F9A /* MainCell.swift in Sources */,
+				CB0E8893254866550098D841 /* MainHeaderView.swift in Sources */,
 				CB733A452543622000C09F9A /* PhotoUseCase.swift in Sources */,
 				CB68557A254148E700132C1A /* AppLaunch.swift in Sources */,
 				CB68553725411B4B00132C1A /* SceneDelegate.swift in Sources */,

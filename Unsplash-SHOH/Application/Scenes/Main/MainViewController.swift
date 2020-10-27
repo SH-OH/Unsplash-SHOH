@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: BaseViewController {
+final class MainViewController: BaseViewController {
     
     @IBOutlet private weak var listCollectionView: UICollectionView!
     

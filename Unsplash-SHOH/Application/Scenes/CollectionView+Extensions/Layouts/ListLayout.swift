@@ -27,13 +27,17 @@ final class ListLayout: UICollectionViewFlowLayout {
     
     weak var delegate: ListLayoutDelegate?
     
-    private var cache = CacheTypeLayoutDictionary()
-    
+    private var cache: CacheTypeLayoutDictionary = CacheTypeLayoutDictionary()
+    private var visibleLayoutAttributes: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
     private var contentWidth: CGFloat = 0
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
+    }
+    
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        return true
     }
     
     override func prepare() {
@@ -69,6 +73,7 @@ final class ListLayout: UICollectionViewFlowLayout {
         
         // 2. Cell 리스트 중에서, 추가된 item만 layoutAttributes 만들기.
         let cellCacheListCount: Int = cache.filter({ $0.key.stringValue != "header" }).count
+        
         for item in cellCacheListCount..<numberOfItems {
             let indexPath: IndexPath = IndexPath(item: item, section: 0)
             
@@ -103,52 +108,113 @@ final class ListLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        
+        self.visibleLayoutAttributes.removeAll(keepingCapacity: true)
+        
+        // 0. 헤더 속성 추가
+        if let headerAttr = cache[.header],
+           let layoutAttributes = super.layoutAttributesForElements(in: rect),
+           let offset = collectionView?.contentOffset {
+            self.visibleLayoutAttributes = layoutAttributes
+            if offset.y < 0 {
+                for attributes in self.visibleLayoutAttributes {
+                    if let kind = attributes.representedElementKind, kind == UICollectionView.elementKindSectionHeader {
+                        let diffValue = abs(offset.y)
+                        var frame = attributes.frame
+                        frame.size.height = max(0, headerReferenceSize.height + diffValue)
+                        frame.origin.y = frame.minY - diffValue
+                        attributes.frame = frame
+                    }
+                }
+            }
+            if rect.intersects(headerAttr.frame) {
+                self.visibleLayoutAttributes.append(headerAttr)
+            }
+        }
+        
         // cache에서 바로 rect와 frame 겹치는 속성들 비교해서 가져오려하니, 아이템이 많을때 스크롤 빠르게 내리면 레이아웃 찾는게 느림..
         // 이진탐색으로 개선 처리.
-        var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
-        var firstFrameIndex: Int = 0
-        var lastFrameIndex: Int = cache.count
-        let range: Range<Int> = 0..<lastFrameIndex
         
-        let layoutQueue = Queue.layout.queue
+        var _first: Int?
+        var _last: Int?
+        let range: Range<Int> = 0..<cache.count
         
-        // 1. 처음부터 검색, 보여줄 아이템 중 맨 앞의 index 가져옴.
-        layoutQueue.async(flags: .barrier) {
-            for index in range {
-                if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
-                    firstFrameIndex = index
-                    return
-                }
+        self.findFirstIndex(rect, range: range) { (first) in
+            if let last = _last {
+                self.setupAttributes(first: first, last: last)
             }
+            _first = first
         }
-        // 2. 마지막부터 검색, 보여줄 아이템 중 맨 뒤의 index 가져옴.
-        layoutQueue.async(flags: .barrier) {
-            for index in range.reversed() {
-                if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
-                    lastFrameIndex = min((index + 1), self.cache.count)
-                    return
-                }
+        self.findLastIndex(rect, range: range) { (last) in
+            if let first = _first {
+                self.setupAttributes(first: first, last: last)
             }
-        }
-        // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
-        layoutQueue.sync {
-            for index in firstFrameIndex..<lastFrameIndex {
-                let key = CacheKey.cell(index)
-                if let attr = self.cache[key] {
-                    visibleLayoutAttributes.append(attr)
-                }
-            }
+            _last = last
         }
         
-        return visibleLayoutAttributes
+        return self.visibleLayoutAttributes
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        print(#function)
         return cache[.cell(indexPath.item)]
+    }
+    
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: String,
+                                                       at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        switch elementKind {
+        case UICollectionView.elementKindSectionHeader:
+            return cache[.header]
+        default:
+            return nil
+        }
     }
     
     private func frameByCachedLayoutAttribute(_ index: Int) -> CGRect {
         return cache[.cell(index)]?.frame ?? .zero
-    }    
+    }
+}
+
+// Binary Search algorithm For Setup layoutAttributes
+extension ListLayout {
+    private func findFirstIndex(_ rect: CGRect,
+                                range: Range<Int>,
+                                completion: @escaping (Int) -> ()) {
+        var firstFrameIndex: Int = 0
+        
+        // 1. 처음부터 검색, 보여줄 아이템 중 맨 앞의 index 가져옴.
+        for index in range {
+            if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
+                firstFrameIndex = index
+                completion(firstFrameIndex)
+                break
+            }
+        }
+    }
+    
+    private func findLastIndex(_ rect: CGRect,
+                               range: Range<Int>,
+                               completion: @escaping (Int) -> ()) {
+        var lastFrameIndex: Int = cache.count
+        
+        // 2. 마지막부터 검색, 보여줄 아이템 중 맨 뒤의 index 가져옴.
+        for index in range.reversed() {
+            if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
+                lastFrameIndex = min((index + 1), self.cache.count)
+                completion(lastFrameIndex)
+                break
+            }
+        }
+    }
+    
+    private func setupAttributes(first: Int,
+                                 last: Int) {
+        // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
+        for index in first..<last {
+            let key = CacheKey.cell(index)
+            if let attr = self.cache[key] {
+                self.visibleLayoutAttributes.append(attr)
+            }
+        }
+    }
+    
 }

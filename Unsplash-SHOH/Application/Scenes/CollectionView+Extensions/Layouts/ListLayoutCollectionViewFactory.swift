@@ -99,16 +99,18 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         guard dataSourceType == .Main else { return .init() }
-        Log.osh("indexPath : \(indexPath)")
-        
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                         withReuseIdentifier: "MainHeaderView",
-                                                                         for: indexPath)
-//        let headerView = collectionView.dequeue(UICollectionReusableView.self,
-//                                                kind: kind,
-//                                                for: indexPath)
-        
-        return headerView
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let headerView = collectionView.dequeue(MainHeaderView.self,
+                                                    kind: kind,
+                                                    for: indexPath)
+            if let item = self.delegate?.photoModels?[safe: indexPath.item] {
+                headerView.configure(item)
+            }
+            return headerView
+        default:
+            return .init()
+        }
     }
 }
 
@@ -136,7 +138,6 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        Log.osh(indexPath)
         switch dataSourceType {
         case .Main:
             let detail = DetailViewController.storyboard()

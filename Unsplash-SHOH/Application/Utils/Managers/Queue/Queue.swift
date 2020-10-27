@@ -12,7 +12,6 @@ enum Queue {
     case request
     case image
     case cache
-    case layout
     
     var queue: DispatchQueue {
         switch self {
@@ -25,10 +24,6 @@ enum Queue {
                                  attributes: .concurrent)
         case .cache:
             return DispatchQueue(label: "queue.ImageCahe.process")
-            
-        case .layout:
-            return DispatchQueue(label: "queue.Layout.process",
-                                 qos: .userInitiated)
         }
     }
 }

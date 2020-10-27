@@ -63,41 +63,44 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MainHeaderView" id="gv4-L5-vNS">
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MainHeaderView" id="gv4-L5-vNS" customClass="MainHeaderView" customModule="Unsplash_SHOH" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySm-sq-5Ja">
-                                            <rect key="frame" x="8" y="8" width="398" height="398"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ohI-3C-OL0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="398"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ohI-3C-OL0">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
+                                                    <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemYellowColor"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="ohI-3C-OL0" secondAttribute="trailing" id="ERh-04-DDo"/>
-                                                <constraint firstItem="ohI-3C-OL0" firstAttribute="leading" secondItem="ySm-sq-5Ja" secondAttribute="leading" id="p6v-xh-kiy"/>
-                                                <constraint firstItem="ohI-3C-OL0" firstAttribute="top" secondItem="ySm-sq-5Ja" secondAttribute="top" id="txb-xP-Yek"/>
-                                                <constraint firstAttribute="bottom" secondItem="ohI-3C-OL0" secondAttribute="bottom" id="yv0-lQ-Xci"/>
+                                                <constraint firstAttribute="trailing" secondItem="ohI-3C-OL0" secondAttribute="trailing" id="I7Z-vg-6Z2"/>
+                                                <constraint firstItem="ohI-3C-OL0" firstAttribute="leading" secondItem="ySm-sq-5Ja" secondAttribute="leading" id="Iwi-fo-XBi"/>
+                                                <constraint firstItem="ohI-3C-OL0" firstAttribute="top" secondItem="ySm-sq-5Ja" secondAttribute="top" id="g0o-rd-R3s"/>
+                                                <constraint firstAttribute="bottom" secondItem="ohI-3C-OL0" secondAttribute="bottom" id="mdO-13-SXf"/>
                                             </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="ySm-sq-5Ja" secondAttribute="bottom" id="GUO-pe-YbQ"/>
-                                        <constraint firstItem="ySm-sq-5Ja" firstAttribute="top" secondItem="gv4-L5-vNS" secondAttribute="topMargin" id="Ukm-FE-KFL"/>
-                                        <constraint firstItem="ySm-sq-5Ja" firstAttribute="leading" secondItem="gv4-L5-vNS" secondAttribute="leadingMargin" id="xvt-mR-QAv"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ySm-sq-5Ja" secondAttribute="trailing" id="xxd-XU-Vxm"/>
+                                        <constraint firstItem="ySm-sq-5Ja" firstAttribute="leading" secondItem="gv4-L5-vNS" secondAttribute="leading" id="F1O-dt-94U"/>
+                                        <constraint firstItem="ySm-sq-5Ja" firstAttribute="top" secondItem="gv4-L5-vNS" secondAttribute="top" id="hNs-U4-jwO"/>
+                                        <constraint firstAttribute="bottom" secondItem="ySm-sq-5Ja" secondAttribute="bottom" id="kfq-CW-rKP"/>
+                                        <constraint firstAttribute="trailing" secondItem="ySm-sq-5Ja" secondAttribute="trailing" id="yKh-w6-aIn"/>
                                     </constraints>
+                                    <connections>
+                                        <outlet property="headerImage" destination="ohI-3C-OL0" id="jui-5f-Xsp"/>
+                                    </connections>
                                 </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kHd-dh-rnH" secondAttribute="trailing" id="7aq-9u-DuV"/>
-                            <constraint firstItem="kHd-dh-rnH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Mnp-ZG-Pgl"/>
+                            <constraint firstAttribute="trailing" secondItem="kHd-dh-rnH" secondAttribute="trailing" id="7aq-9u-DuV"/>
+                            <constraint firstItem="kHd-dh-rnH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mnp-ZG-Pgl"/>
                             <constraint firstAttribute="bottom" secondItem="kHd-dh-rnH" secondAttribute="bottom" id="hpA-RT-cUU"/>
                             <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="zPq-0O-HYk"/>
                         </constraints>
@@ -112,6 +115,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

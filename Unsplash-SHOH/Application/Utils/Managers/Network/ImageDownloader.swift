@@ -24,7 +24,8 @@ final class ImageDownloader {
     
     func retriveImage(_ url: URL,
                       size: CGSize,
-                      completion: @escaping (UIImage) -> ()) {
+                      isHeader: Bool = false,
+                      completion: ((UIImage) -> ())? = nil) {
         guard task == nil else {
             return
         }
@@ -39,10 +40,11 @@ final class ImageDownloader {
                         return
                     }
                     let resizedImage = image.resizedImage(size: size)
-                    imageCache.setImage(url.absoluteString,
+                    let key = isHeader ? "header" : url.absoluteString
+                    imageCache.setImage(key,
                                         image: resizedImage)
                     DispatchQueue.main.async {
-                        completion(resizedImage)
+                        completion?(resizedImage)
                     }
                 }
             }
