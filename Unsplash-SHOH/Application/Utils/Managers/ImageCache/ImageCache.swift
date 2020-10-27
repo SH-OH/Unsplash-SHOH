@@ -18,29 +18,31 @@ struct ImageCache {
     
     private let lock: NSLock = NSLock()
     
-    private let cache: NSCache<NSString, UIImage> = {
-        let cache = NSCache<NSString, UIImage>()
-        cache.countLimit = Config.countLimit
-        return cache
-    }()
+    private var cache: [String: UIImage] = [:]
     
     func getImage(_ key: String) -> UIImage? {
-        return cache.object(forKey: key as NSString)
+        self.lock.lock()
+        defer { lock.unlock() }
+        let cachedImage = self.cache[key]
+        Log.osh("get cached key : \(key)\n get cached image completion : \(cachedImage)")
+        return cachedImage
     }
     
     func getImage(_ key: String, completion: @escaping (UIImage?) -> ()) {
         Queue.cache.queue.async {
-            let cachedImage = cache.object(forKey: key as NSString)
-//            Log.osh("get cached key : \(key)\n get cached image : \(cachedImage)")
+            self.lock.lock()
+            defer { lock.unlock() }
+            let cachedImage = self.cache[key]
+            Log.osh("get cached key : \(key)\n get cached image completion : \(cachedImage)")
             completion(cachedImage)
         }
     }
     
-    func setImage(_ key: String, image: UIImage) {
-        Queue.cache.queue.async {
-            cache.setObject(image, forKey: key as NSString)
-//            Log.osh("set cache key : \(key)\n set cache image : \(image)")
-        }
+    mutating func setImage(_ key: String, image: UIImage) {
+        self.lock.lock()
+        defer { lock.unlock() }
+        self.cache.updateValue(image, forKey: key)
+        Log.osh("set cache key : \(key)\n set cache image : \(image)")
     }
     
 }

@@ -32,7 +32,7 @@ final class MainCell: UICollectionViewCell {
                    for activityData: ImageDownloadUseCase.ForActivityData,
                    index: Int) {
         self.index = index
-        Log.osh("index : \(index), image size : \(listImage.image?.size)")
+//        Log.osh("index : \(index), image size : \(listImage.image?.size)")
         listImageNameLb.text = makeName(item.user)
         listImage.backgroundColor = item.color
         imageDownloadUseCase.downloadImage(item,

@@ -45,6 +45,7 @@ final class ListLayoutCollectionViewFactory: NSObject {
                              targetCV: UICollectionView) {
         self.delegate = delegate
         targetCV.dataSource = self
+        targetCV.prefetchDataSource = self
         targetCV.delegate = self
         if let layout = targetCV.collectionViewLayout as? ListLayout {
             layout.delegate = self
@@ -154,6 +155,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
         guard let photoModels = delegate?.photoModels else { return }
         switch dataSourceType {
         case .Main:
+            Log.osh("indexPath : \(indexPath)")
             let prefetchIndex: Bool = indexPath.item == photoModels.count-15
             if prefetchIndex {
                 self.requestGetPhotoList()
@@ -184,5 +186,12 @@ extension ListLayoutCollectionViewFactory: ListLayoutDelegate {
         let width = collectionView.bounds.width
         let height = CGFloat(item.height) * width / CGFloat(item.width)
         return height
+    }
+}
+
+extension ListLayoutCollectionViewFactory: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView,
+                        prefetchItemsAt indexPaths: [IndexPath]) {
+        Log.osh("indexPath : \(indexPaths)")
     }
 }
