@@ -12,6 +12,7 @@ enum Queue {
     case request
     case image
     case cache
+    case layout
     
     var queue: DispatchQueue {
         switch self {
@@ -19,13 +20,15 @@ enum Queue {
             return DispatchQueue(label: "queue.Unsplash-SHOH.root")
         case .request:
             return DispatchQueue(label: "queue.NetworkManager.request")
-            
-            // operationQueue로 바꿔서 해보자!
         case .image:
             return DispatchQueue(label: "queue.NetworkManager.image.download",
                                  attributes: .concurrent)
         case .cache:
             return DispatchQueue(label: "queue.ImageCahe.process")
+            
+        case .layout:
+            return DispatchQueue(label: "queue.Layout.process",
+                                 qos: .userInitiated)
         }
     }
 }

@@ -105,123 +105,41 @@ final class ListLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         // cache에서 바로 rect와 frame 겹치는 속성들 비교해서 가져오려하니, 아이템이 많을때 스크롤 빠르게 내리면 레이아웃 찾는게 느림..
         // 이진탐색으로 개선 처리.
-//        var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
-        //        var firstFrameIndex: Int = 0
-        //        var lastFrameIndex: Int = cache.count
-        //        let range: Range<Int> = 0..<lastFrameIndex
-        //
-        //        var handlers: [([UICollectionViewLayoutAttributes]) -> (Void)] = []
-        //
-        //        let testGroup: DispatchGroup = .init()
-        //        let testLayoutQueue: DispatchQueue = .init(label: "layout")
-        //
-        //        // 1. 처음부터 검색, 보여줄 아이템 중 맨 앞의 index 가져옴.
-        //
-        //        testLayoutQueue.async(group: testGroup, execute: {
-        //            Log.osh("111 get firstFrameIndex go")
-        //            for index in range {
-        //                if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
-        //                    firstFrameIndex = index
-        //                    Log.osh("111 get firstFrameIndex finish")
-        //                    break
-        //                }
-        //            }
-        //        })
-        //
-        //        // 2. 마지막부터 검색, 보여줄 아이템 중 맨 뒤의 index 가져옴.
-        //        testLayoutQueue.async(group: testGroup, execute: {
-        //            Log.osh("222 get lastFrameIndex go")
-        //            for index in range.reversed() {
-        //                if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
-        //                    lastFrameIndex = min((index + 1), self.cache.count)
-        //                    Log.osh("222 get lastFrameIndex finish")
-        //                    break
-        //                }
-        //            }
-        //        })
-        //
-        //        // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
-        //        testGroup.notify(queue: testLayoutQueue, execute: {
-        //
-        //            Log.osh("333 append visibleLayoutAttributes go")
-        //            for index in firstFrameIndex..<lastFrameIndex {
-        //                let key = CacheKey.cell(index)
-        //                if let attr = self.cache[key] {
-        //                    visibleLayoutAttributes.append(attr)
-        //                    Log.osh("333 append visibleLayoutAttributes finish")
-        //                }
-        //            }
-        //        })
-        
-        
-        
-        
-        
-        
-        
-        // cache에서 바로 rect와 frame 겹치는 속성들 비교해서 가져오려하니, 아이템이 많을때 스크롤 빠르게 내리면 레이아웃 찾는게 느림..
-        // 이진탐색으로 개선 처리.
         var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
         var firstFrameIndex: Int = 0
         var lastFrameIndex: Int = cache.count
         let range: Range<Int> = 0..<lastFrameIndex
         
-        let opQueue: OperationQueue = .init()
-        opQueue.name = "layout"
-        opQueue.qualityOfService = .userInteractive
-        opQueue.maxConcurrentOperationCount = 4
-        
+        let layoutQueue = Queue.layout.queue
         
         // 1. 처음부터 검색, 보여줄 아이템 중 맨 앞의 index 가져옴.
-        
-//        Log.osh("111 get firstFrameIndex go")
-        opQueue.addOperation {
+        layoutQueue.async(flags: .barrier) {
             for index in range {
                 if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
                     firstFrameIndex = index
-//                    Log.osh("222 get firstFrameIndex finish")
                     return
                 }
             }
         }
-        
-        
         // 2. 마지막부터 검색, 보여줄 아이템 중 맨 뒤의 index 가져옴.
-//        Log.osh("333 get lastFrameIndex go")
-        opQueue.addOperation {
+        layoutQueue.async(flags: .barrier) {
             for index in range.reversed() {
                 if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
                     lastFrameIndex = min((index + 1), self.cache.count)
-//                    Log.osh("444 get lastFrameIndex finish")
                     return
                 }
             }
         }
-        
-        opQueue.waitUntilAllOperationsAreFinished()
-        
-        
         // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
-//        Log.osh("555 append visibleLayoutAttributes go")
-        opQueue.addOperation {
+        layoutQueue.sync {
             for index in firstFrameIndex..<lastFrameIndex {
                 let key = CacheKey.cell(index)
                 if let attr = self.cache[key] {
                     visibleLayoutAttributes.append(attr)
-//                    Log.osh("666 append visibleLayoutAttributes finish")
                 }
             }
         }
         
-        opQueue.waitUntilAllOperationsAreFinished()
-        
-//        Log.osh("777 findlayout return")
-        
-//        visibleLayoutAttributes = self.findLayout(rect) { () in
-//            Log.osh("888 findLayout complete")
-//        } ?? []
-//
-//        Log.osh("999 return visibleLayoutAttributes")
         return visibleLayoutAttributes
     }
     
@@ -232,66 +150,5 @@ final class ListLayout: UICollectionViewFlowLayout {
     
     private func frameByCachedLayoutAttribute(_ index: Int) -> CGRect {
         return cache[.cell(index)]?.frame ?? .zero
-    }
-    
-    private func findLayout(_ rect: CGRect, completion: @escaping () -> ()) -> [UICollectionViewLayoutAttributes]? {
-        // cache에서 바로 rect와 frame 겹치는 속성들 비교해서 가져오려하니, 아이템이 많을때 스크롤 빠르게 내리면 레이아웃 찾는게 느림..
-        // 이진탐색으로 개선 처리.
-        var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
-        var firstFrameIndex: Int = 0
-        var lastFrameIndex: Int = cache.count
-        let range: Range<Int> = 0..<lastFrameIndex
-        
-        let opQueue: OperationQueue = .init()
-        opQueue.name = "layout"
-        opQueue.qualityOfService = .userInitiated
-        opQueue.maxConcurrentOperationCount = 4
-        
-        
-        // 1. 처음부터 검색, 보여줄 아이템 중 맨 앞의 index 가져옴.
-        
-//        Log.osh("111 get firstFrameIndex go")
-        opQueue.addOperation {
-            for index in range {
-                if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
-                    firstFrameIndex = index
-//                    Log.osh("222 get firstFrameIndex finish")
-                    return
-                }
-            }
-        }
-        
-        
-        // 2. 마지막부터 검색, 보여줄 아이템 중 맨 뒤의 index 가져옴.
-//        Log.osh("333 get lastFrameIndex go")
-        opQueue.addOperation {
-            for index in range.reversed() {
-                if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
-                    lastFrameIndex = min((index + 1), self.cache.count)
-//                    Log.osh("444 get lastFrameIndex finish")
-                    return
-                }
-            }
-        }
-        
-        opQueue.waitUntilAllOperationsAreFinished()
-        
-        
-        // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
-//        Log.osh("555 append visibleLayoutAttributes go")
-        opQueue.addOperation {
-            for index in firstFrameIndex..<lastFrameIndex {
-                let key = CacheKey.cell(index)
-                if let attr = self.cache[key] {
-                    visibleLayoutAttributes.append(attr)
-//                    Log.osh("666 append visibleLayoutAttributes finish")
-                }
-            }
-            completion()
-        }
-        
-//        Log.osh("777 findlayout return")
-        return nil
-    }
-    
+    }    
 }
