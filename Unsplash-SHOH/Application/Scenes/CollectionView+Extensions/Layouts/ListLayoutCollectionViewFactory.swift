@@ -80,7 +80,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                 let isFirst: Bool = indexPath.item == 0 && self.isFirstLoadFlag
                 let data = ImageDownloadUseCase.ForActivityData(isFirst: isFirst,
                                                                 parentViewController: self.parentController)
-                cell.configure(item, for: data, index: indexPath.item)
+                cell.configure(item, for: data)
                 if self.isFirstLoadFlag {
                     self.isFirstLoadFlag = false
                 }
@@ -98,7 +98,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-//        guard dataSourceType == .Main else { return .init() }
+        guard dataSourceType == .Main else { return .init() }
         Log.osh("indexPath : \(indexPath)")
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
@@ -117,19 +117,19 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return dataSourceType == .Main ? 1 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return dataSourceType == .Main ? 1 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        guard dataSourceType == .Main else { return .zero }
+        guard dataSourceType == .Main else { return .zero }
         let width: CGFloat = collectionView.bounds.width
         return CGSize(width: width, height: width)
     }

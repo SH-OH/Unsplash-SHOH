@@ -19,37 +19,28 @@ struct ImageDownloadUseCase {
     func downloadImage(_ item: PhotoModel,
                        target: UIImageView,
                        size: CGSize,
-                       for activityData: ForActivityData? = nil,
-                       index: Int) {
+                       for activityData: ForActivityData? = nil) {
         guard let regularUrl = item.urls[.regular] else { return }
         let url = self.resizedURL(regularUrl, size: target.bounds.size)
-        ImageCache.shared.getImage(url.absoluteString) { (image) in
-            if let cachedImage = image {
-                DispatchQueue.main.async {
-                    target.image = cachedImage
-                    Log.osh("index : \(index), cached image set size : \(target.image?.size)")
-                }
-                return
+        if let cachedImage = ImageCache.shared.getImage(url.absoluteString) {
+            DispatchQueue.main.async {
+                target.image = cachedImage
             }
-            
-            self.controlActivity(show: true,
-                                 activityData: activityData)
-            imageDownloader.retriveImage(url, size: size) { [self] (image) in
-                DispatchQueue.main.async {
+            return
+        }
+        
+        self.controlActivity(show: true,
+                             activityData: activityData)
+        imageDownloader.retriveImage(url, size: size) { [self] (image) in
+            DispatchQueue.main.async {
+                UIView.transition(with: target,
+                                  duration: 0.3,
+                                  options: .transitionCrossDissolve) {
                     target.image = image
+                } completion: { (_) in
+                    self.controlActivity(show: false,
+                                         activityData: activityData)
                 }
-                
-//                UIView.transition(with: target,
-//                                  duration: 0.3,
-//                                  options: .transitionCrossDissolve) {
-//                    target.image = image
-//                    Log.osh("index : \(index), not cached image set size : \(target.image?.size)")
-//                } completion: { (_) in
-//                    self.controlActivity(show: false,
-//                                         activityData: activityData)
-//                }
-                self.controlActivity(show: false,
-                                     activityData: activityData)
             }
         }
     }

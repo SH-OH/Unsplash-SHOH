@@ -19,6 +19,7 @@ final class ImageCache {
     private init() {
         cache = [:]
     }
+    
     func getImage(_ key: String) -> UIImage? {
         Queue.cache.queue.sync {
             lock.lock()
@@ -26,14 +27,6 @@ final class ImageCache {
             return cache[key]
         }
     }
-    
-//    func getImage(_ key: String, completion: @escaping (UIImage?) -> ()) {
-//        Queue.cache.queue.async {
-//            let cachedImage = cache.object(forKey: key as NSString)
-////            Log.osh("get cached key : \(key)\n get cached image : \(cachedImage)")
-//            completion(cachedImage)
-//        }
-//    }
     
     func setImage(_ key: String, image: UIImage) {
         Queue.cache.queue.async(flags: .barrier) { [self] in

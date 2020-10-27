@@ -42,16 +42,12 @@ final class ImageDownloader {
                     imageCache.setImage(url.absoluteString,
                                         image: resizedImage)
                     DispatchQueue.main.async {
-                        completion(image)
+                        completion(resizedImage)
                     }
                 }
             }
             self.task?.resume()
         }
-    }
-    
-    func cancel() {
-        task?.cancel()
     }
     
 }
