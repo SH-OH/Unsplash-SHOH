@@ -18,7 +18,11 @@ final class DetailCell: UICollectionViewCell {
                           size: frame.size,
                           imageCache: imageData.imageCache) { (image) in
                 if let visibleImageCell = imageData.collectionView.cellForItem(at: imageData.indexPath) as? DetailCell {
-                    visibleImageCell.detailImage.image = image
+                    UIView.transition(with: visibleImageCell.detailImage,
+                                      duration: 0.3,
+                                      options: .transitionCrossDissolve) {
+                        visibleImageCell.detailImage.image = image
+                    }
                 }
             }
     }
