@@ -17,6 +17,10 @@ final class Provider {
     
     var task: URLSessionDataTask?
     
+    deinit {
+        print("provider deinit ?????????????????????????????????")
+    }
+    
     private func prepareURLComponenets(_ urlString: String,
                                        parameters: [String: Any]?) -> URLComponents? {
         var components = URLComponents(string: urlString)

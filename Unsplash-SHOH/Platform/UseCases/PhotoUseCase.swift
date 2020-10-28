@@ -22,8 +22,6 @@ struct PhotoUseCase {
         }
     }
     
-    private let provider: Provider = .init()
-    
     func getPhotoList(oldModels: [PhotoModel],
                       completion: @escaping ([PhotoModel]) -> ()) {
         let page: Int = self.compareModelCountToPerPage(oldModels.count,
@@ -33,7 +31,7 @@ struct PhotoUseCase {
             "page": page,
             "per_page": ParamConstants.perPage
         ]
-        provider.request([PhotoModel].self,
+        Provider().request([PhotoModel].self,
                           urlString: APIDomain.photos.url,
                           method: .get,
                           parameters: params) { (result) in
@@ -58,7 +56,7 @@ struct PhotoUseCase {
             "order_by": ParamConstants.orderBy.rawValue,
             "content_filter": ParamConstants.contentFilter.rawValue
         ]
-        provider.request(PhotoSearch.self,
+        Provider().request(PhotoSearch.self,
                          urlString: APIDomain.search.url,
                          method: .get,
                          parameters: params) { (result) in
