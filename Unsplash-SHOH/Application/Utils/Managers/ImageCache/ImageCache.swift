@@ -39,7 +39,7 @@ final class ImageCahe {
         Queue.cache.queue.async(flags: .barrier) { [self] in
             lock.lock()
             defer { lock.unlock() }
-            cache.removeAll()
+            cache.removeAll(keepingCapacity: true)
         }
     }
 }

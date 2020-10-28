@@ -23,7 +23,8 @@ enum Queue {
             return DispatchQueue(label: "queue.NetworkManager.image.download",
                                  attributes: .concurrent)
         case .cache:
-            return DispatchQueue(label: "queue.ImageCahe.process")
+            return DispatchQueue(label: "queue.ImageCahe.process",
+                                 attributes: .concurrent)
         }
     }
 }

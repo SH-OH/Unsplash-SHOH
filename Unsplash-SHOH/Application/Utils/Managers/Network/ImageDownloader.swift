@@ -10,6 +10,18 @@ import UIKit
 
 final class ImageDownloader {
     
+    struct ImageData {
+        let item: PhotoModel
+        let imageCache: ImageCahe
+        let collectionView: UICollectionView
+        let indexPath: IndexPath
+    }
+    
+    struct ForActivityData {
+        let isFirst: Bool
+        let parentViewController: UIViewController?
+    }
+    
     var task: URLSessionDataTask?
     
     private func prepareURLRequest(_ url: URL) -> URLRequest {
@@ -24,10 +36,21 @@ final class ImageDownloader {
                       size: CGSize,
                       imageCache: ImageCahe,
                       isHeader: Bool = false,
-                      completion: ((UIImage) -> ())? = nil) {
+                      activityData: ForActivityData? = nil,
+                      completion: @escaping (UIImage) -> ()) {
+        let key = isHeader ? "header" : url.absoluteString
+        if let cachedImage = imageCache.getImage(key) {
+            DispatchQueue.main.async {
+                completion(cachedImage)
+            }
+            return
+        }
+        
         guard task == nil else {
             return
         }
+        
+        self.controlActivity(show: true, activityData: activityData)
         let request: URLRequest = self.prepareURLRequest(url)
         Queue.root.queue.async {
             self.task = NetworkManager.shared.session.dataTask(with: request) { [self] (data, _, error) in
@@ -43,7 +66,8 @@ final class ImageDownloader {
                     imageCache.setImage(key,
                                         image: resizedImage)
                     DispatchQueue.main.async {
-                        completion?(resizedImage)
+                        completion(resizedImage)
+                        self.controlActivity(show: false, activityData: activityData)
                     }
                 }
             }
@@ -51,4 +75,14 @@ final class ImageDownloader {
         }
     }
     
+}
+
+extension ImageDownloader {
+    private func controlActivity(show: Bool,
+                                 activityData: ForActivityData?) {
+        guard let activityData = activityData else { return }
+        NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
+                                                  show: show,
+                                                  useLoading: activityData.isFirst)
+    }
 }

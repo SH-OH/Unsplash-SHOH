@@ -9,30 +9,34 @@ import UIKit.UICollectionViewCell
 
 final class ListCell: UICollectionViewCell {
     
-    struct ForActivityData {
-        let isFirst: Bool
-        let parentViewController: UIViewController?
-    }
-    
     @IBOutlet private weak var listImage: UIImageView!
     @IBOutlet private weak var listImageNameLb: UILabel!
-    
-    private let imageDownloadUseCase: ImageDownloadUseCase = .init()
     
     override func prepareForReuse() {
         super.prepareForReuse()
         listImage.image = nil
     }
     
-    func configure(_ item: PhotoModel,
-                   imageCache: ImageCahe,
-                   for activityData: ImageDownloadUseCase.ForActivityData) {
-        listImageNameLb.text = item.user?.makeName()
-        listImage.backgroundColor = item.color
-        ImageDownloadUseCase().downloadImage(item,
-                                           target: listImage,
-                                           size: frame.size,
-                                           imageCache: imageCache,
-                                           for: activityData)
+    func configure(_ imageData: ImageDownloader.ImageData,
+                   activityData: ImageDownloader.ForActivityData?) {
+        listImageNameLb.text = imageData.item.user?.makeName()
+        listImage.backgroundColor = imageData.item.color
+        
+        
+        if let url = imageData.item.urls[.regular] {
+            ImageDownloader()
+                .retriveImage(url,
+                              size: frame.size,
+                              imageCache: imageData.imageCache,
+                              activityData: activityData) { (image) in
+                    if let visibleImageCell = imageData.collectionView.cellForItem(at: imageData.indexPath) as? ListCell {
+                        UIView.transition(with: visibleImageCell.listImage,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve) {
+                            visibleImageCell.listImage.image = image
+                        }
+                    }
+                }
+        }
     }
 }

@@ -62,8 +62,8 @@ struct PhotoUseCase {
                          urlString: APIDomain.search.url,
                          method: .get,
                          parameters: params) { (result) in
-            if case let .success(result) = result {
-                let result: [PhotoModel] = oldModels + result.results
+            if case let .success(_result) = result {
+                let result: [PhotoModel] = oldModels + _result.results
                 completion(result)
             }
         }

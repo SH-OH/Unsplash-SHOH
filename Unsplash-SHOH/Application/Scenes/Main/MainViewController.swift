@@ -84,8 +84,12 @@ extension MainViewController: ListLayoutCollectionViewFactoryDelegate {}
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        search.searchedText = searchBar.text
+        guard let searchedText = searchBar.text,
+              !searchedText.isEmpty else {
+            return
+        }
+        search.searchedText = searchedText
         attachSearch()
-        search.getSearchDelegateFactory().requestGetSearchList(searchBar.text)
+        search.getSearchDelegateFactory().requestGetSearchList(searchedText)
     }
 }

@@ -80,7 +80,6 @@ final class ListLayoutCollectionViewFactory: NSObject {
     
     func requestGetSearchList(_ curSearchedText: String?) {
         guard let curSearchedText = curSearchedText,
-              !curSearchedText.isEmpty,
               let photoModels = delegate?.photoModels else { return }
         let isChanged: Bool = self.searchedText != curSearchedText
         if self.searchedText != curSearchedText {
@@ -92,9 +91,15 @@ final class ListLayoutCollectionViewFactory: NSObject {
         
         clearData()
         
+        if isChanged {
+            targetCV.scrollToItem(at: IndexPath(item: 0, section: 0),
+                                  at: .top,
+                                  animated: false)
+        }
+        
         photoUseCase.getSearchList(curSearchedText,
                                    isChanged: isChanged,
-                                   oldModels: oldModels) { [self] (resultModels) in
+                                   oldModels: oldModels) { [self] (resultModels)  in
             delegate?.photoModels = resultModels
             controlEmptyView(resultModels)
             reloadData()
@@ -128,19 +133,23 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                         numberOfItemsInSection section: Int) -> Int {
         return delegate?.photoModels?.count ?? 0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch dataSourceType {
         case .list, .search:
             let cell = collectionView.dequeue(ListCell.self, for: indexPath)
             if let item = self.delegate?.photoModels?[safe: indexPath.item] {
+                let imageData = ImageDownloader.ImageData(item: item,
+                                                          imageCache: imageCache,
+                                                          collectionView: collectionView,
+                                                          indexPath: indexPath)
                 let isFirst: Bool = indexPath.item == 0 && self.isFirstLoadFlag
-                let data = ImageDownloadUseCase.ForActivityData(isFirst: isFirst,
-                                                                parentViewController: self.parentController)
-                cell.configure(item,
-                               imageCache: self.imageCache,
-                               for: data)
+                let activityData = ImageDownloader.ForActivityData(isFirst: isFirst,
+                                                           parentViewController: self.parentController)
+                cell.configure(imageData,
+                               activityData: activityData)
+                
                 if self.isFirstLoadFlag {
                     self.isFirstLoadFlag = false
                 }
@@ -149,8 +158,11 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
         case .detail:
             let cell = collectionView.dequeue(DetailCell.self, for: indexPath)
             if let item = self.delegate?.photoModels?[safe: indexPath.item] {
-                cell.configure(item,
-                               imageCache: imageCache)
+                let imageData = ImageDownloader.ImageData(item: item,
+                                                          imageCache: imageCache,
+                                                          collectionView: collectionView,
+                                                          indexPath: indexPath)
+                cell.configure(imageData)
             }
             return cell
         }
@@ -166,8 +178,11 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                                                     kind: kind,
                                                     for: indexPath)
             if let item = self.delegate?.photoModels?.last {
-                headerView.configure(item,
-                                     imageCache: imageCache)
+                let imageData = ImageDownloader.ImageData(item: item,
+                                                          imageCache: imageCache,
+                                                          collectionView: collectionView,
+                                                          indexPath: indexPath)
+                headerView.configure(imageData)
             }
             return headerView
         default:
@@ -242,7 +257,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
             if prefetchIndex {
                 self.requestGetSearchList(self.searchedText)
             }
-        break
+            break
         }
     }
 }
