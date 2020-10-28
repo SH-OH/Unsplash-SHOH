@@ -20,6 +20,7 @@ final class DetailViewController: BaseViewController {
     private lazy var delegateFactory: ListLayoutCollectionViewFactory = {
         let factory = ListLayoutCollectionViewFactory(self,
                                                       targetCV: detailCollectionView,
+                                                      imageCache: prevDelegateFactory?.imageCache ?? .init(),
                                                       type: .detail)
         return factory
     }()

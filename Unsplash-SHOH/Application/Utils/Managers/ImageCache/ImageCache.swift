@@ -14,8 +14,8 @@ final class ImageCahe {
     
     private let lock: NSLock
     
-    init() {
-        self.cache = [:]
+    init(cache: [String: UIImage] = [:]) {
+        self.cache = cache
         self.lock = .init()
     }
     
@@ -41,5 +41,9 @@ final class ImageCahe {
             defer { lock.unlock() }
             cache.removeAll(keepingCapacity: true)
         }
+    }
+    
+    func getCacheList() -> [String: UIImage] {
+        return cache
     }
 }

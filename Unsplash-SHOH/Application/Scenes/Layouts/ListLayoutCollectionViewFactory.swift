@@ -29,20 +29,21 @@ final class ListLayoutCollectionViewFactory: NSObject {
     
     let dataSourceType: DataSourceType
     let targetCV: UICollectionView
+    let imageCache: ImageCahe
     
     /// 메인 화면 첫 진입으로 셀 이미지 로딩 보여주기 위한 Flag
     /// 상세 화면 시작 위치 설정을 위한 Flag
     private var isFirstLoadFlag: Bool = true
     
-    private let imageCache: ImageCahe = ImageCahe()
-    
     private let photoUseCase: PhotoUseCase = PhotoUseCase()
     
     init(_ delegate: ListLayoutCollectionViewFactoryDelegate,
          targetCV: UICollectionView,
+         imageCache: ImageCahe = .init(),
          type: DataSourceType) {
         self.dataSourceType = type
         self.targetCV = targetCV
+        self.imageCache = imageCache
         super.init()
         self.setDelegate(delegate,
                          targetCV: targetCV)
