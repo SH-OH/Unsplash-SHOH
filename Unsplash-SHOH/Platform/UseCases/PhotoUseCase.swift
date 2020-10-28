@@ -51,7 +51,7 @@ struct PhotoUseCase {
         let page: Int = isChanged
             ? 1
             : self.compareModelCountToPerPage(oldModels.count, ParamConstants.perPage)
-        let params: [String: Any] = [
+         let params: [String: Any] = [
             "query": searchedText,
             "page": page,
             "per_page": ParamConstants.perPage,

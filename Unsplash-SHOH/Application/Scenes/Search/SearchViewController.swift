@@ -33,10 +33,9 @@ final class SearchViewController: BaseViewController {
         factory.searchedText = self.searchedText
         return factory
     }()
-     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        delegateFactory.requestGetSearchList(searchedText)
+    
+    func getSearchDelegateFactory() -> ListLayoutCollectionViewFactory {
+        return delegateFactory
     }
 }
 

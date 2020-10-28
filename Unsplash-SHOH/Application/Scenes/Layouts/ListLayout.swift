@@ -45,6 +45,7 @@ final class ListLayout: UICollectionViewFlowLayout {
               let delegate = delegate else {
             return
         }
+        
         let numberOfItems: Int = collectionView.numberOfItems(inSection: 0)
         // 1. 리스트 불러올 때마다 item과 cache 갯수 비교하여(>) 레이아웃 prepare.
         guard numberOfItems > cache.count else {

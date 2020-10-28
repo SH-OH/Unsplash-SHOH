@@ -66,7 +66,7 @@ final class Provider {
                         "02.parameters": parameters ?? "NO PARAMETERS",
                         "03.Response": response.isEmpty ? "NO DATA" : response
                     ]
-                    Log.d(makeDict)
+//                    Log.d(makeDict)
                     #endif
                     if let error = error {
                         Log.e(error)
