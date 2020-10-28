@@ -15,7 +15,7 @@ final class DetailViewController: BaseViewController {
     @IBOutlet private weak var detailCollectionView: UICollectionView!
     
     var initialSelectedIndexPath: IndexPath?
-    var prevCollectionView: UICollectionView?
+    var prevDelegateFactory: ListLayoutCollectionViewFactory?
     var photoModels: [PhotoModel]?
     
     private lazy var delegateFactory: ListLayoutCollectionViewFactory = {
@@ -38,12 +38,16 @@ final class DetailViewController: BaseViewController {
            let photoModels = photoModels {
             var scrollPosition: UICollectionView.ScrollPosition = .centeredVertically
             switch visibleIndex.item {
+            case 0:
+                if prevDelegateFactory?.dataSourceType == .search {
+                    scrollPosition = .top
+                }
             case photoModels.count-1:
                 scrollPosition = .bottom
             default:
                 break
             }
-            prevCollectionView?.scrollToItem(at: visibleIndex,
+            prevDelegateFactory?.targetCV.scrollToItem(at: visibleIndex,
                                             at: scrollPosition,
                                             animated: false)
         }

@@ -23,14 +23,14 @@ final class ListLayoutCollectionViewFactory: NSObject {
     var selectedIndexPath: IndexPath?
     var searchedText: String?
     
+    let dataSourceType: DataSourceType
+    let targetCV: UICollectionView
+    
     private var prevSearchedText: String?
     
     /// 메인 화면 첫 진입으로 셀 이미지 로딩 보여주기 위한 Flag
     /// 상세 화면 시작 위치 설정을 위한 Flag
     private var isFirstLoadFlag: Bool = true
-    
-    private let dataSourceType: DataSourceType
-    private let targetCV: UICollectionView
     
     private let photoUseCase: PhotoUseCase = PhotoUseCase()
     
@@ -79,10 +79,6 @@ final class ListLayoutCollectionViewFactory: NSObject {
             delegate?.photoModels = resultModels
             reloadData()
         }
-    }
-    
-    func findDataSourceType() -> DataSourceType {
-        return dataSourceType
     }
     
     private func reloadData() {
@@ -171,7 +167,7 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
         case .list, .search:
             let detail = DetailViewController.storyboard()
             detail.photoModels = delegate?.photoModels
-            detail.prevCollectionView = collectionView
+            detail.prevDelegateFactory = self
             detail.initialSelectedIndexPath = indexPath
             self.parentController?.present(detail, animated: true, completion: nil)
         case .detail:

@@ -52,7 +52,7 @@ final class ListLayout: UICollectionViewFlowLayout {
             return
         }
         
-        let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.findDataSourceType() ?? .list
+        let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.dataSourceType ?? .list
         let photoWidth: CGFloat = collectionView.bounds.width
         
         /// more 시 바로 offset에 + 하기 위해, offset start value를 현재 collectionView의 size로 설정.
