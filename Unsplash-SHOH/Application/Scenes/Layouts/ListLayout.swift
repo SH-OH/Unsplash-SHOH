@@ -80,9 +80,9 @@ final class ListLayout: UICollectionViewFlowLayout {
             yOffset = photoWidth
         }
         
-        // 2. Cell 리스트 중에서, 추가된 item만 layoutAttributes 만들기.
         let cellCacheListCount: Int = cache.filter({ $0.key.stringValue != "header" }).count
         
+        // 2. Cell 리스트 중에서, 새로운 item만 layoutAttributes 만들기.
         for item in cellCacheListCount..<numberOfItems {
             let indexPath: IndexPath = IndexPath(item: item, section: 0)
             
@@ -143,20 +143,16 @@ final class ListLayout: UICollectionViewFlowLayout {
         // 이진탐색으로 개선 처리.
         
         var _first: Int?
-        var _last: Int?
         let range: Range<Int> = 0..<cache.count
         
         self.findFirstIndex(rect, range: range) { (first) in
-            if let last = _last {
-                self.setupAttributes(first: first, last: last)
-            }
             _first = first
         }
         self.findLastIndex(rect, range: range) { (last) in
             if let first = _first {
                 self.setupAttributes(first: first, last: last)
+                Log.osh("2. first : \(first), last : \(last)")
             }
-            _last = last
         }
         
         return self.visibleLayoutAttributes
@@ -176,9 +172,6 @@ final class ListLayout: UICollectionViewFlowLayout {
         }
     }
     
-    private func frameByCachedLayoutAttribute(_ index: Int) -> CGRect {
-        return cache[.cell(index)]?.frame ?? .zero
-    }
 }
 
 // Binary Search algorithm For Setup layoutAttributes
@@ -224,4 +217,7 @@ extension ListLayout {
         }
     }
     
+    private func frameByCachedLayoutAttribute(_ index: Int) -> CGRect {
+        return cache[.cell(index)]?.frame ?? .zero
+    }
 }

@@ -114,7 +114,9 @@ final class ListLayoutCollectionViewFactory: NSObject {
     
     private func reloadData() {
         DispatchQueue.main.async {
+            Log.osh("reload after")
             self.targetCV.reloadData()
+            Log.osh("reload after")
         }
     }
     
