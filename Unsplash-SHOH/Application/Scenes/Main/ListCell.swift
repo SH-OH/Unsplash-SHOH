@@ -1,5 +1,5 @@
 //
-//  MainCell.swift
+//  ListCell.swift
 //  Unsplash-SHOH
 //
 //  Created by Oh Sangho on 2020/10/24.
@@ -7,7 +7,7 @@
 
 import UIKit.UICollectionViewCell
 
-final class MainCell: UICollectionViewCell {
+final class ListCell: UICollectionViewCell {
     
     struct ForActivityData {
         let isFirst: Bool

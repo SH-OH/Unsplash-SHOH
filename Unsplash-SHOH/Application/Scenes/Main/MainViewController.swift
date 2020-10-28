@@ -10,17 +10,16 @@ import UIKit
 final class MainViewController: BaseViewController {
     
     @IBOutlet private weak var listCollectionView: UICollectionView!
+    @IBOutlet private weak var searchBar: IBSearchBar!
     
-    var photoModels: [PhotoModel]? = [] {
-        didSet {
-            self.reloadData()
-        }
-    }
+    private let search: SearchViewController = SearchViewController.storyboard()
+    
+    var photoModels: [PhotoModel]? = []
     
     private lazy var delegateFactory: ListLayoutCollectionViewFactory = {
         let factory = ListLayoutCollectionViewFactory(self,
                                                       targetCV: listCollectionView,
-                                                      type: .Main)
+                                                      type: .list)
         factory.parentController = self.navigationController()
         return factory
     }()
@@ -28,25 +27,16 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         delegateFactory.requestGetPhotoList()
+        searchBar.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if #available(iOS 13.0, *) {
-//            searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search photos", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-    
-    private func reloadData() {
-        DispatchQueue.main.async {
-            self.listCollectionView.reloadData()
-        }
+    @IBAction private func cancelSearch(_ sender: UIButton) {
+        self.detachSeach()
+        self.searchBar.resignFirstResponder()
     }
 }
 
-// Load NavigationController
+// MARK: - Navigation Controller
 extension MainViewController {
     private func navigationController() -> BaseNavigationController {
         guard let navigationController = navigationController as? BaseNavigationController else {
@@ -54,7 +44,47 @@ extension MainViewController {
         }
         return navigationController
     }
+    
+    private func attachSearch() {
+        guard !self.children.contains(search) else { return }
+        search.photoModels = []
+        search.parentController = self.navigationController()
+        search.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addChild(self.search)
+        self.view.addSubview(self.search.view)
+        NSLayoutConstraint.activate([
+            self.search.view.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
+            self.search.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.search.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.search.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+        self.view.layoutIfNeeded()
+        search.view.alpha = 0
+        UIView.animate(withDuration: 0.3) {
+            self.search.view.alpha = 1
+            self.search.view.layoutIfNeeded()
+        }
+    }
+    
+    private func detachSeach() {
+        guard self.children.contains(search) else { return }
+        self.search.willMove(toParent: nil)
+        self.search.view.removeFromSuperview()
+        self.search.removeFromParent()
+    }
 }
 
 // MARK: - ListLayoutCollectionViewFactoryDelegate
 extension MainViewController: ListLayoutCollectionViewFactoryDelegate {}
+
+
+// MARK - UISearchBarDelegate
+extension MainViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Log.osh(searchBar.text)
+        searchBar.resignFirstResponder()
+        search.searchedText = searchBar.text
+        self.attachSearch()
+    }
+}

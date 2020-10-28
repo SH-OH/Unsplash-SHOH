@@ -17,12 +17,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search photos" translatesAutoresizingMaskIntoConstraints="NO" id="JnP-QL-pdu">
-                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HgE-xw-KDA">
+                                <rect key="frame" x="10" y="44" width="394" height="60"/>
+                                <subviews>
+                                    <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" placeholder="Search photos" translatesAutoresizingMaskIntoConstraints="NO" id="JnP-QL-pdu" customClass="IBSearchBar" customModule="Unsplash_SHOH" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="331" height="60"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </searchBar>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkT-6w-tQo">
+                                        <rect key="frame" x="331" y="0.0" width="63" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelSearch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="d8T-uD-me9"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="7V7-mb-2aL"/>
+                                </constraints>
+                            </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kHd-dh-rnH">
-                                <rect key="frame" x="0.0" y="100" width="414" height="796"/>
+                                <rect key="frame" x="0.0" y="104" width="414" height="792"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="naF-gi-KP1" customClass="ListLayout" customModule="Unsplash_SHOH" customModuleProvider="target">
                                     <size key="itemSize" width="128" height="128"/>
@@ -31,7 +54,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MainCell" id="Rsc-h0-Isw" customClass="MainCell" customModule="Unsplash_SHOH" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListCell" id="Rsc-h0-Isw" userLabel="ListCell" customClass="ListCell" customModule="Unsplash_SHOH" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="414" width="414" height="546"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="jkp-DJ-moA">
@@ -42,7 +65,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="546"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oscar Helgstrand" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJk-0R-flB">
-                                                    <rect key="frame" x="20.000000000000007" y="514" width="116.66666666666669" height="17"/>
+                                                    <rect key="frame" x="19.999999999999993" y="514" width="116.33333333333331" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -102,17 +125,18 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="JnP-QL-pdu" secondAttribute="bottom" id="3vH-q0-eyG"/>
+                            <constraint firstItem="HgE-xw-KDA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="1fi-Kp-9Dm"/>
                             <constraint firstAttribute="trailing" secondItem="kHd-dh-rnH" secondAttribute="trailing" id="7aq-9u-DuV"/>
-                            <constraint firstItem="JnP-QL-pdu" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="9dQ-Da-zll"/>
-                            <constraint firstItem="JnP-QL-pdu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="BRf-3Z-orU"/>
                             <constraint firstItem="kHd-dh-rnH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mnp-ZG-Pgl"/>
-                            <constraint firstItem="JnP-QL-pdu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="N9D-aJ-nMM"/>
                             <constraint firstAttribute="bottom" secondItem="kHd-dh-rnH" secondAttribute="bottom" id="hpA-RT-cUU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HgE-xw-KDA" secondAttribute="trailing" constant="10" id="oyW-Fs-rb2"/>
+                            <constraint firstItem="kHd-dh-rnH" firstAttribute="top" secondItem="HgE-xw-KDA" secondAttribute="bottom" id="sre-KE-lMg"/>
+                            <constraint firstItem="HgE-xw-KDA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="tCB-QX-r0c"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="listCollectionView" destination="kHd-dh-rnH" id="sNg-YP-0W9"/>
+                        <outlet property="searchBar" destination="JnP-QL-pdu" id="RiK-AY-DA8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -120,4 +144,9 @@
             <point key="canvasLocation" x="140.57971014492756" y="87.723214285714278"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="JnP-QL-pdu">
+            <size key="intrinsicContentSize" width="-1" height="56"/>
+        </designable>
+    </designables>
 </document>

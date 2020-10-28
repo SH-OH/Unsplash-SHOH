@@ -51,7 +51,7 @@ final class ListLayout: UICollectionViewFlowLayout {
             return
         }
         
-        let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.findDataSourceType() ?? .Main
+        let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.findDataSourceType() ?? .list
         let photoWidth: CGFloat = collectionView.bounds.width
         
         /// more 시 바로 offset에 + 하기 위해, offset start value를 현재 collectionView의 size로 설정.
@@ -59,7 +59,7 @@ final class ListLayout: UICollectionViewFlowLayout {
         var yOffset: CGFloat = contentHeight
         
         // 메인 섹션 헤더 layoutAttributes 만들기.
-        if cache[.header] == nil && dataSourceType == .Main {
+        if cache[.header] == nil && dataSourceType == .list {
             let headerSize: CGSize = CGSize(width: photoWidth,
                                             height: photoWidth)
             let kind: String = UICollectionView.elementKindSectionHeader
@@ -96,10 +96,10 @@ final class ListLayout: UICollectionViewFlowLayout {
             
             // 2-3. 위에서 구한 cell frame으로 CollectionView total Offset(for contentsSize) 구하기.
             switch dataSourceType {
-            case .Main:
+            case .list, .search:
                 contentHeight = frame.maxY
                 yOffset = yOffset + photoHeight
-            case .Detail:
+            case .detail:
                 contentWidth = frame.maxX
                 xOffset = xOffset + photoWidth
                 yOffset = 0

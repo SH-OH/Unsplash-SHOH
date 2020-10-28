@@ -20,16 +20,11 @@ struct PhotoModel: Decodable {
     let height: Int
     let width: Int
     let color: UIColor?
-    let exif: PhotoExif?
     let user: PhotoUser?
     let urls: [URLType: URL]
-    let links: [LinkType: URL]
-    let likes: Int
-    let downloads: Int?
-    let views: Int?
     
     private enum CodingKeys: String, CodingKey {
-        case id, height, width, color, exif, user, urls, links, likes, downloads, views
+        case id, height, width, color, user, urls
     }
     
     init(from decoder: Decoder) throws {
@@ -38,12 +33,7 @@ struct PhotoModel: Decodable {
         height = try container.decode(Int.self, forKey: .height)
         width = try container.decode(Int.self, forKey: .width)
         color = try container.decode(UIColor.self, forKey: .color)
-        exif = try? container.decode(PhotoExif.self, forKey: .exif)
         user = try container.decode(PhotoUser.self, forKey: .user)
         urls = try container.decode([URLType: URL].self, forKey: .urls)
-        links = try container.decode([LinkType: URL].self, forKey: .links)
-        likes = try container.decode(Int.self, forKey: .likes)
-        downloads = try? container.decode(Int.self, forKey: .downloads)
-        views = try? container.decode(Int.self, forKey: .views)
     }   
 }

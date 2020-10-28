@@ -40,30 +40,4 @@ extension KeyedDecodingContainer {
         }
         return result
     }
-    
-    func decode(_ type: [PhotoUser.ProfileImageSize: URL].Type,
-                forKey key: Key) throws -> [PhotoUser.ProfileImageSize: URL] {
-        let sizeDic: [String: String] = try self.decode([String: String].self, forKey: key)
-        var result: [PhotoUser.ProfileImageSize: URL] = [:]
-        for (key, value) in sizeDic {
-            if let size = PhotoUser.ProfileImageSize(rawValue: key),
-               let url = URL(string: value) {
-                result[size] = url
-            }
-        }
-        return result
-    }
-    
-    func decode(_ type: [PhotoUser.LinkType: URL].Type,
-                forKey key: Key) throws -> [PhotoUser.LinkType: URL] {
-        let linkDic: [String: String] = try self.decode([String: String].self, forKey: key)
-        var result: [PhotoUser.LinkType: URL] = [:]
-        for (key, value) in linkDic {
-            if let type = PhotoUser.LinkType(rawValue: key),
-               let url = URL(string: value) {
-                result[type] = url
-            }
-        }
-        return result
-    }
 }

@@ -57,6 +57,7 @@ final class Provider {
         let request: URLRequest = self.prepareURLRequest(url, method: method)
         Queue.root.queue.async {
             self.task = NetworkManager.shared.session.dataTask(with: request) { (data, response, error) in
+                self.task = nil
                 Queue.request.queue.async {
                     #if DEBUG
                     let response: String = String(data: data ?? .init(), encoding: .utf8) ?? "NO DATA"
@@ -65,7 +66,7 @@ final class Provider {
                         "02.parameters": parameters ?? "NO PARAMETERS",
                         "03.Response": response.isEmpty ? "NO DATA" : response
                     ]
-                    //                Log.d(makeDict)
+                    Log.d(makeDict)
                     #endif
                     if let error = error {
                         Log.e(error)

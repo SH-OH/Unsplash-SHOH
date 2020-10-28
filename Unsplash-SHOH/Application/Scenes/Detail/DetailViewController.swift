@@ -15,17 +15,13 @@ final class DetailViewController: BaseViewController {
     @IBOutlet private weak var detailCollectionView: UICollectionView!
     
     var initialSelectedIndexPath: IndexPath?
-    var mainCollectionView: UICollectionView?
-    var photoModels: [PhotoModel]? {
-        didSet {
-            self.reloadData()
-        }
-    }
+    var prevCollectionView: UICollectionView?
+    var photoModels: [PhotoModel]?
     
     private lazy var delegateFactory: ListLayoutCollectionViewFactory = {
         let factory = ListLayoutCollectionViewFactory(self,
                                                       targetCV: detailCollectionView,
-                                                      type: .Detail)
+                                                      type: .detail)
         return factory
     }()
     
@@ -33,12 +29,6 @@ final class DetailViewController: BaseViewController {
         super.viewDidLoad()
         setButtonTitleByOS()
         delegateFactory.selectedIndexPath = initialSelectedIndexPath
-    }
-    
-    private func reloadData() {
-        DispatchQueue.main.async {
-            self.detailCollectionView.reloadData()
-        }
     }
     
     // Actions
@@ -53,7 +43,7 @@ final class DetailViewController: BaseViewController {
             default:
                 break
             }
-            mainCollectionView?.scrollToItem(at: visibleIndex,
+            prevCollectionView?.scrollToItem(at: visibleIndex,
                                             at: scrollPosition,
                                             animated: false)
         }
