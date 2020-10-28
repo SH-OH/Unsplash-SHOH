@@ -52,8 +52,6 @@ final class ListLayout: UICollectionViewFlowLayout {
         
         isNewData = numberOfItems <= PhotoUseCase.ParamConstants.perPage
         
-        // 1. 새로운 리스트 데이터인지 확인하여, 기존 캐싱 제거.
-        /// isNewData 기준 : 검색인 경우 perPage에 따라 30이면, 총 데이터가 30개 이하면 1페이지, 즉 새로운 데이터로 본다.
         if isNewData {
             cache.removeAll(keepingCapacity: true)
             contentWidth = 0
@@ -63,11 +61,9 @@ final class ListLayout: UICollectionViewFlowLayout {
         let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.dataSourceType ?? .list
         let photoWidth: CGFloat = collectionView.bounds.width
         
-        /// more 시 바로 offset에 + 하기 위해, offset start value를 현재 collectionView의 size로 설정.
         var xOffset: CGFloat = contentWidth
         var yOffset: CGFloat = contentHeight
         
-        // 메인 섹션 헤더 layoutAttributes 만들기.
         if cache[.header] == nil && dataSourceType == .list {
             let headerSize: CGSize = CGSize(width: photoWidth,
                                             height: photoWidth)
@@ -82,14 +78,11 @@ final class ListLayout: UICollectionViewFlowLayout {
         
         let cellCacheListCount: Int = cache.filter({ $0.key.stringValue != "header" }).count
         
-        // 2. Cell 리스트 중에서, 새로운 item만 layoutAttributes 만들기.
         for item in cellCacheListCount..<numberOfItems {
             let indexPath: IndexPath = IndexPath(item: item, section: 0)
             
-            // 2-1. 사진 resize된 height로 셀 frame 만들기.
             let photoHeight: CGFloat = delegate.collectionView(collectionView,
                                                                photoHeightForItemAt: indexPath)
-            // 2-1-1. Horizontal 대상, 이미지 가운데 정렬. (상세 화면)
             if scrollDirection == .horizontal {
                 let centerYOffsetByMaxY: CGFloat = (collectionView.frame.maxY-photoHeight)/2
                 yOffset = centerYOffsetByMaxY - collectionView.frame.minY
@@ -98,12 +91,10 @@ final class ListLayout: UICollectionViewFlowLayout {
             let frame: CGRect = CGRect(x: xOffset, y: yOffset,
                                        width: photoWidth, height: photoHeight)
             
-            // 2-2. IndexPath Key Type의 Dictionary Cache에 Attributes 만들어서 저장.
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
             cache.updateValue(attributes, forKey: .cell(item))
             
-            // 2-3. 위에서 구한 cell frame으로 CollectionView total Offset(for contentsSize) 구하기.
             switch dataSourceType {
             case .list, .search:
                 contentHeight = frame.maxY
@@ -120,7 +111,6 @@ final class ListLayout: UICollectionViewFlowLayout {
         
         self.visibleLayoutAttributes.removeAll(keepingCapacity: true)
         
-        // 0. 헤더 속성 추가
         if cache[.header] != nil,
            let layoutAttributes = super.layoutAttributesForElements(in: rect),
            let offset = collectionView?.contentOffset {
@@ -139,9 +129,6 @@ final class ListLayout: UICollectionViewFlowLayout {
             }
         }
         
-        // cache에서 바로 rect와 frame 겹치는 속성들 비교해서 가져오려하니, 아이템이 많을때 스크롤 빠르게 내리면 레이아웃 찾는게 느림..
-        // 이진탐색으로 개선 처리.
-        
         var _first: Int?
         let range: Range<Int> = 0..<cache.count
         
@@ -151,7 +138,6 @@ final class ListLayout: UICollectionViewFlowLayout {
         self.findLastIndex(rect, range: range) { (last) in
             if let first = _first {
                 self.setupAttributes(first: first, last: last)
-                Log.osh("2. first : \(first), last : \(last)")
             }
         }
         
@@ -181,7 +167,6 @@ extension ListLayout {
                                 completion: @escaping (Int) -> ()) {
         var firstFrameIndex: Int = 0
         
-        // 1. 처음부터 검색, 보여줄 아이템 중 맨 앞의 index 가져옴.
         for index in range {
             if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
                 firstFrameIndex = index
@@ -196,7 +181,6 @@ extension ListLayout {
                                completion: @escaping (Int) -> ()) {
         var lastFrameIndex: Int = cache.count
         
-        // 2. 마지막부터 검색, 보여줄 아이템 중 맨 뒤의 index 가져옴.
         for index in range.reversed() {
             if rect.intersects(self.frameByCachedLayoutAttribute(index)) {
                 lastFrameIndex = min((index + 1), self.cache.count)
@@ -208,7 +192,6 @@ extension ListLayout {
     
     private func setupAttributes(first: Int,
                                  last: Int) {
-        // 3. 재계산된 index들로 visible item들의 속성 모두 추가함.
         for index in first..<last {
             let key = CacheKey.cell(index)
             if let attr = self.cache[key] {
