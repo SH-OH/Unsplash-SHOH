@@ -31,6 +31,7 @@ final class MainViewController: BaseViewController {
     }
     
     @IBAction private func cancelSearch(_ sender: UIButton) {
+        self.searchBar.text = nil
         self.detachSeach()
         self.searchBar.resignFirstResponder()
     }
@@ -47,7 +48,6 @@ extension MainViewController {
     
     private func attachSearch() {
         guard !self.children.contains(search) else { return }
-        search.photoModels = []
         search.parentController = self.navigationController()
         search.view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -69,6 +69,7 @@ extension MainViewController {
     
     private func detachSeach() {
         guard self.children.contains(search) else { return }
+        self.search.getSearchDelegateFactory().clearData()
         self.search.willMove(toParent: nil)
         self.search.view.removeFromSuperview()
         self.search.removeFromParent()
@@ -84,7 +85,7 @@ extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         search.searchedText = searchBar.text
-        self.attachSearch()
+        attachSearch()
         search.getSearchDelegateFactory().requestGetSearchList(searchBar.text)
     }
 }

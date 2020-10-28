@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6F-Pu-6cK">
-                                        <rect key="frame" x="157" y="0.0" width="100" height="60"/>
+                                        <rect key="frame" x="65" y="0.0" width="284" height="60"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <state key="normal" title="Nicolas Mejia">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -64,6 +64,7 @@
                                     <constraint firstAttribute="bottom" secondItem="x6F-Pu-6cK" secondAttribute="bottom" id="tst-kb-yjf"/>
                                     <constraint firstAttribute="bottom" secondItem="QJg-KS-t64" secondAttribute="bottom" id="uOf-ko-T1n"/>
                                     <constraint firstItem="QJg-KS-t64" firstAttribute="leading" secondItem="Qpa-ne-Ipg" secondAttribute="leading" constant="10" id="v8X-Qt-h6e"/>
+                                    <constraint firstItem="x6F-Pu-6cK" firstAttribute="leading" secondItem="QJg-KS-t64" secondAttribute="trailing" constant="15" id="z4G-Rf-BsB"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VJd-Sq-OgB">

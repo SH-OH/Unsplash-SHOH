@@ -17,7 +17,6 @@ final class ListCell: UICollectionViewCell {
     @IBOutlet private weak var listImage: UIImageView!
     @IBOutlet private weak var listImageNameLb: UILabel!
     
-    private let imageDownloader: ImageDownloader = .init()
     private let imageDownloadUseCase: ImageDownloadUseCase = .init()
     
     override func prepareForReuse() {
@@ -26,25 +25,14 @@ final class ListCell: UICollectionViewCell {
     }
     
     func configure(_ item: PhotoModel,
+                   imageCache: ImageCahe,
                    for activityData: ImageDownloadUseCase.ForActivityData) {
-        listImageNameLb.text = makeName(item.user)
+        listImageNameLb.text = item.user?.makeName()
         listImage.backgroundColor = item.color
-        imageDownloadUseCase.downloadImage(item,
+        ImageDownloadUseCase().downloadImage(item,
                                            target: listImage,
                                            size: frame.size,
+                                           imageCache: imageCache,
                                            for: activityData)
-    }
-    
-    private func makeName(_ user: PhotoUser?) -> String {
-        if let name = user?.name {
-            return name
-        }
-        if let firstName = user?.firstName {
-            if let lastName = user?.lastName {
-                return "\(firstName) \(lastName)"
-            }
-            return firstName
-        }
-        return user?.username ?? ""
     }
 }

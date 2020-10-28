@@ -11,11 +11,11 @@ final class DetailCell: UICollectionViewCell {
     
     @IBOutlet private weak var detailImage: UIImageView!
     
-    private let imageDownloadUseCase: ImageDownloadUseCase = .init()
-    
-    func configure(_ item: PhotoModel) {
-        imageDownloadUseCase.downloadImage(item,
+    func configure(_ item: PhotoModel,
+                   imageCache: ImageCahe) {
+        ImageDownloadUseCase().downloadImage(item,
                                            target: detailImage,
-                                           size: frame.size)
+                                           size: frame.size,
+                                           imageCache: imageCache)
     }
 }

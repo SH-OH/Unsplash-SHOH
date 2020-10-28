@@ -9,19 +9,15 @@ import UIKit
 
 final class SearchViewController: BaseViewController {
     
-    @IBOutlet private weak var searchCollectionView: UICollectionView!
-    @IBOutlet private weak var emptyView: UIView!
-    
-    var photoModels: [PhotoModel]? = [] {
+    @IBOutlet private weak var searchCollectionView: UICollectionView! {
         didSet {
-            if let models = photoModels {
-                DispatchQueue.main.async {
-                    self.emptyView.isHidden = !models.isEmpty
-                }
-            }
+            searchCollectionView.backgroundView = emptyView
+            searchCollectionView.backgroundView?.isHidden = true
         }
     }
+    @IBOutlet private weak var emptyView: UIView!
     
+    var photoModels: [PhotoModel]? = []
     var searchedText: String?
     var parentController: BaseNavigationController?
     

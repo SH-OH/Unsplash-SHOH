@@ -63,10 +63,7 @@ struct PhotoUseCase {
                          method: .get,
                          parameters: params) { (result) in
             if case let .success(result) = result {
-                let prevModels = isChanged
-                    ? []
-                    : oldModels
-                let result: [PhotoModel] = prevModels + result.results
+                let result: [PhotoModel] = oldModels + result.results
                 completion(result)
             }
         }

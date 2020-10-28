@@ -8,16 +8,15 @@
 import Foundation
 import UIKit.UIImage
 
-final class ImageCache {
-    
-    static let shared = ImageCache()
+final class ImageCahe {
     
     private var cache: [String: UIImage]
     
-    private let lock: NSLock = NSLock()
+    private let lock: NSLock
     
-    private init() {
-        cache = [:]
+    init() {
+        self.cache = [:]
+        self.lock = .init()
     }
     
     func getImage(_ key: String) -> UIImage? {
@@ -36,4 +35,11 @@ final class ImageCache {
         }
     }
     
+    func removeAll() {
+        Queue.cache.queue.async(flags: .barrier) { [self] in
+            lock.lock()
+            defer { lock.unlock() }
+            cache.removeAll()
+        }
+    }
 }

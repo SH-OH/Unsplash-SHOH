@@ -31,6 +31,7 @@ final class ListLayout: UICollectionViewFlowLayout {
     private var visibleLayoutAttributes: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
     private var contentWidth: CGFloat = 0
+    private var isNewData: Bool = false
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
@@ -41,15 +42,22 @@ final class ListLayout: UICollectionViewFlowLayout {
     }
     
     override func prepare() {
+        super.prepare()
         guard let collectionView = self.collectionView,
               let delegate = delegate else {
             return
         }
         
         let numberOfItems: Int = collectionView.numberOfItems(inSection: 0)
-        // 1. 리스트 불러올 때마다 item과 cache 갯수 비교하여(>) 레이아웃 prepare.
-        guard numberOfItems > cache.count else {
-            return
+        
+        isNewData = numberOfItems <= PhotoUseCase.ParamConstants.perPage
+        
+        // 1. 새로운 리스트 데이터인지 확인하여, 기존 캐싱 제거.
+        /// isNewData 기준 : 검색인 경우 perPage에 따라 30이면, 총 데이터가 30개 이하면 1페이지, 즉 새로운 데이터로 본다.
+        if isNewData {
+            cache.removeAll(keepingCapacity: true)
+            contentWidth = 0
+            contentHeight = 0
         }
         
         let dataSourceType = (collectionView.dataSource as? ListLayoutCollectionViewFactory)?.dataSourceType ?? .list

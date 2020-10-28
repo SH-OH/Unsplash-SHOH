@@ -12,8 +12,6 @@ final class ImageDownloader {
     
     var task: URLSessionDataTask?
     
-    private let imageCache: ImageCache = ImageCache.shared
-    
     private func prepareURLRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url,
                                  timeoutInterval: NetworkManager.shared.timeout)
@@ -24,6 +22,7 @@ final class ImageDownloader {
     
     func retriveImage(_ url: URL,
                       size: CGSize,
+                      imageCache: ImageCahe,
                       isHeader: Bool = false,
                       completion: ((UIImage) -> ())? = nil) {
         guard task == nil else {

@@ -16,14 +16,23 @@ struct ImageDownloadUseCase {
     
     private let imageDownloader: ImageDownloader = .init()
     
+    private func controlActivity(show: Bool,
+                                 activityData: ForActivityData?) {
+        guard let activityData = activityData else { return }
+        NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
+                                                  show: show,
+                                                  useLoading: activityData.isFirst)
+    }
+    
     func downloadImage(_ item: PhotoModel,
                        target: UIImageView,
                        size: CGSize,
+                       imageCache: ImageCahe,
                        isHeader: Bool = false,
                        for activityData: ForActivityData? = nil) {
         guard let url = item.urls[.regular] else { return }
         let key = isHeader ? "header" : url.absoluteString
-        if let cachedImage = ImageCache.shared.getImage(key) {
+        if let cachedImage = imageCache.getImage(key) {
             DispatchQueue.main.async {
                 target.image = cachedImage
             }
@@ -34,6 +43,7 @@ struct ImageDownloadUseCase {
                              activityData: activityData)
         imageDownloader.retriveImage(url,
                                      size: size,
+                                     imageCache: imageCache,
                                      isHeader: isHeader) { [self] (image) in
             DispatchQueue.main.async {
                 UIView.transition(with: target,
@@ -48,12 +58,4 @@ struct ImageDownloadUseCase {
         }
     }
     
-    private func controlActivity(show: Bool,
-                                  activityData: ForActivityData?) {
-        guard let activityData = activityData else { return }
-        NetworkManager.shared.showNetworkActivity(activityData.parentViewController,
-                                                  show: show,
-                                                  useLoading: activityData.isFirst)
-    }
 }
-

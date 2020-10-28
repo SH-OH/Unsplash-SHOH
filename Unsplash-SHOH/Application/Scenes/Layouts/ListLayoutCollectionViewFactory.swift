@@ -20,17 +20,21 @@ final class ListLayoutCollectionViewFactory: NSObject {
     weak var delegate: ListLayoutCollectionViewFactoryDelegate?
     
     var parentController: UIViewController?
-    var selectedIndexPath: IndexPath?
+    var selectedIndexPath: IndexPath? {
+        didSet {
+            detailConfigure()
+        }
+    }
     var searchedText: String?
     
     let dataSourceType: DataSourceType
     let targetCV: UICollectionView
     
-    private var prevSearchedText: String?
-    
     /// 메인 화면 첫 진입으로 셀 이미지 로딩 보여주기 위한 Flag
     /// 상세 화면 시작 위치 설정을 위한 Flag
     private var isFirstLoadFlag: Bool = true
+    
+    private let imageCache: ImageCahe = ImageCahe()
     
     private let photoUseCase: PhotoUseCase = PhotoUseCase()
     
@@ -58,6 +62,14 @@ final class ListLayoutCollectionViewFactory: NSObject {
         }
     }
     
+    private func detailConfigure() {
+        if let detail = self.delegate as? DetailViewController,
+           let selectedIndex = selectedIndexPath?.item,
+           let selectedItem = delegate?.photoModels?[selectedIndex] {
+            detail.configure(selectedItem)
+        }
+    }
+    
     func requestGetPhotoList() {
         guard let photoModels = delegate?.photoModels else { return }
         photoUseCase.getPhotoList(oldModels: photoModels) { [self] (resultModels) in
@@ -66,19 +78,32 @@ final class ListLayoutCollectionViewFactory: NSObject {
         }
     }
     
-    func requestGetSearchList(_ searchedText: String?) {
-        guard let searchedText = searchedText,
+    func requestGetSearchList(_ curSearchedText: String?) {
+        guard let curSearchedText = curSearchedText,
+              !curSearchedText.isEmpty,
               let photoModels = delegate?.photoModels else { return }
-        let isChanged: Bool = prevSearchedText != searchedText
-        if prevSearchedText != searchedText {
-            prevSearchedText = searchedText
+        let isChanged: Bool = self.searchedText != curSearchedText
+        if self.searchedText != curSearchedText {
+            self.searchedText = curSearchedText
         }
-        photoUseCase.getSearchList(searchedText,
+        let oldModels: [PhotoModel] = isChanged
+            ? []
+            : photoModels
+        
+        clearData()
+        
+        photoUseCase.getSearchList(curSearchedText,
                                    isChanged: isChanged,
-                                   oldModels: photoModels) { [self] (resultModels) in
+                                   oldModels: oldModels) { [self] (resultModels) in
             delegate?.photoModels = resultModels
+            controlEmptyView(resultModels)
             reloadData()
         }
+    }
+    
+    func clearData() {
+        delegate?.photoModels = []
+        imageCache.removeAll()
     }
     
     private func reloadData() {
@@ -87,6 +112,14 @@ final class ListLayoutCollectionViewFactory: NSObject {
         }
     }
     
+    private func controlEmptyView(_ resultModels: [PhotoModel]) {
+        guard dataSourceType == .search else { return }
+        DispatchQueue.main.async {
+            if let backgroundView = self.targetCV.backgroundView {
+                backgroundView.isHidden = !resultModels.isEmpty
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -105,7 +138,9 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                 let isFirst: Bool = indexPath.item == 0 && self.isFirstLoadFlag
                 let data = ImageDownloadUseCase.ForActivityData(isFirst: isFirst,
                                                                 parentViewController: self.parentController)
-                cell.configure(item, for: data)
+                cell.configure(item,
+                               imageCache: self.imageCache,
+                               for: data)
                 if self.isFirstLoadFlag {
                     self.isFirstLoadFlag = false
                 }
@@ -114,7 +149,8 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
         case .detail:
             let cell = collectionView.dequeue(DetailCell.self, for: indexPath)
             if let item = self.delegate?.photoModels?[safe: indexPath.item] {
-                cell.configure(item)
+                cell.configure(item,
+                               imageCache: imageCache)
             }
             return cell
         }
@@ -130,7 +166,8 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDataSource {
                                                     kind: kind,
                                                     for: indexPath)
             if let item = self.delegate?.photoModels?.last {
-                headerView.configure(item)
+                headerView.configure(item,
+                                     imageCache: imageCache)
             }
             return headerView
         default:
@@ -167,8 +204,8 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
         case .list, .search:
             let detail = DetailViewController.storyboard()
             detail.photoModels = delegate?.photoModels
+            self.selectedIndexPath = indexPath
             detail.prevDelegateFactory = self
-            detail.initialSelectedIndexPath = indexPath
             self.parentController?.present(detail, animated: true, completion: nil)
         case .detail:
             break
@@ -191,9 +228,11 @@ extension ListLayoutCollectionViewFactory: UICollectionViewDelegateFlowLayout {
                                                 at: .centeredHorizontally,
                                                 animated: false)
                 }
+                
                 self.isFirstLoadFlag = false
                 return
             }
+            self.selectedIndexPath = indexPath
             let prefetchIndex: Bool = indexPath.item == photoModels.count-15
             if prefetchIndex {
                 self.requestGetPhotoList()

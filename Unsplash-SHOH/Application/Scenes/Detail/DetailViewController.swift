@@ -14,7 +14,6 @@ final class DetailViewController: BaseViewController {
     @IBOutlet private weak var shareButton: UIButton!
     @IBOutlet private weak var detailCollectionView: UICollectionView!
     
-    var initialSelectedIndexPath: IndexPath?
     var prevDelegateFactory: ListLayoutCollectionViewFactory?
     var photoModels: [PhotoModel]?
     
@@ -28,7 +27,11 @@ final class DetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setButtonTitleByOS()
-        delegateFactory.selectedIndexPath = initialSelectedIndexPath
+        delegateFactory.selectedIndexPath = prevDelegateFactory?.selectedIndexPath
+    }
+    
+    func configure(_ item: PhotoModel) {
+        nameButton.setTitle(item.user?.makeName(), for: .normal)
     }
     
     // Actions

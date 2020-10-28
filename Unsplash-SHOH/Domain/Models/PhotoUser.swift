@@ -29,3 +29,18 @@ struct PhotoUser: Decodable {
         name = try? container.decode(String.self, forKey: .name)
     }
 }
+
+extension PhotoUser {
+    func makeName() -> String {
+        if let name = self.name {
+            return name
+        }
+        if let firstName = self.firstName {
+            if let lastName = self.lastName {
+                return "\(firstName) \(lastName)"
+            }
+            return firstName
+        }
+        return self.username
+    }
+}
